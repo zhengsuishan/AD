@@ -11,18 +11,17 @@ import traceback
 class SendVerfication(object):
 
     udid = None
-    swipe_cmd_user = 'adb -s %s shell input swipe %d %d %d %d %d'%(udid, 360, 640, 360, 640 - 145, 300)
-    swipe_cmd_video = 'adb -s %s shell input swipe %d %d %d %d %d' % (udid, 360, 640, 360, 640 - 600, 300)
-    back_cmd = 'adb -s %s shell input keyevent 4'%udid
 
     launch_time = 15
     wait_time = 5
-    driver = InitDriver.get_driver(InitDriver)
+    driver = None
 
     send_times = None
+    user_swipe_times = 0
 
-    def set_udid(self, udid):
+    def set_udid_driver(self, udid, driver):
         self.udid = udid
+        self.driver = driver
 
     #获取文案
     def get_text(self):
@@ -54,46 +53,82 @@ class SendVerfication(object):
             print(traceback.print_exc())
 
     def add_fri(self):
+        swipe_cmd_user = 'adb -s %s shell input swipe %d %d %d %d %d' % (self.udid, 360, 640, 360, 640 - 145, 300)
+        swipe_cmd_video = 'adb -s %s shell input swipe %d %d %d %d %d' % (self.udid, 360, 640, 360, 640 - 600, 300)
+        back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
         try:
-            # 读取发送次数
-            self.send_times = self.read_count(SendVerfication)
+            if Locators.SAY[1] in self.driver.page_source:
+                pass
+            else:
+                # 读取发送次数
+                self.send_times = self.read_count(SendVerfication)
 
-            # 判断是否是广告
-            try:
-                WebDriverWait(self.driver, self.wait_time).until(
-                    lambda driver: driver.find_element(Locators.USER_COMMENT[0], Locators.USER_COMMENT[1]))
-            except Exception as e:
-                # 滑动屏幕
-                os.popen(self.swipe_cmd_user)
-                time.sleep(1.5)
-                self.add_fri(SendVerfication)
+                # 判断是否是广告
+                try:
+                    WebDriverWait(self.driver, self.wait_time).until(
+                        lambda driver: driver.find_element(Locators.USER_COMMENT[0], Locators.USER_COMMENT[1]))
+                except Exception as e:
+                    # 滑动屏幕
+                    os.popen(swipe_cmd_video)
+                    self.user_swipe_times = 0
+                    time.sleep(1.5)
+                    self.add_fri(SendVerfication)
+
+                # 获取评论数
+                pl_num = self.driver.find_element(Locators.USER_COMMENT[0], Locators.USER_COMMENT[1]).get_attribute(
+                    'text')
+                pl_num = int(pl_num)
+
+                # 判断评论数是否大于100
+                if pl_num >= 100:
+                    self.driver.find_element(Locators.USER_COMMENT[0], Locators.USER_COMMENT[1]).click()
+                else:
+                    os.popen(swipe_cmd_video)
+                    time.sleep(1.5)
+                    self.add_fri(SendVerfication)
 
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
             self.driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]).click()  # 点击用户头像
-            WebDriverWait(self.driver, self.wait_time).until(
-                lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
-            self.driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]).click()  # 点击加为好友
-            WebDriverWait(self.driver, self.wait_time).until(
-                lambda driver: driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]))
-            self.driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]).send_keys(
-                self.get_text(SendVerfication))  # 输入内容
 
-            time.sleep(0.5)
+            if Locators.ADD_TEXT[1] in self.driver.page_source:
+                WebDriverWait(self.driver, self.wait_time).until(
+                    lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
+                self.driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]).click()  # 点击加为好友
+                WebDriverWait(self.driver, self.wait_time).until(
+                    lambda driver: driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]))
+                self.driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]).send_keys(
+                    self.get_text(SendVerfication))  # 输入内容
 
-            self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
-            self.send_times += 1
-            self.write_count(SendVerfication, self.send_times)
-            WebDriverWait(self.driver, self.wait_time).until(
-                lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
-            os.popen(self.back_cmd)
-            WebDriverWait(self.driver, self.wait_time).until(
-                lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
+                time.sleep(0.5)
 
-            # 滑动屏幕
-            os.popen(self.swipe_cmd_user)
-            time.sleep(1.5)
-            self.add_fri(SendVerfication)
+                self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+                self.send_times += 1
+                self.write_count(SendVerfication, self.send_times)
+                WebDriverWait(self.driver, self.wait_time).until(
+                    lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
+                os.popen(back_cmd)
+                WebDriverWait(self.driver, self.wait_time).until(
+                    lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
+
+                # 滑动屏幕
+                os.popen(swipe_cmd_user)
+                time.sleep(1.5)
+                self.user_swipe_times += 1
+
+                # 判断一个视频的评论数-5 >=划动次数
+                if pl_num - 5 >= self.user_swipe_times:
+                    os.popen(back_cmd)
+                    WebDriverWait(self.driver, self.wait_time).until(
+                        lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
+                    self.add_fri(SendVerfication)
+                else:
+                    self.add_fri(SendVerfication)
+            else:
+                os.popen(back_cmd)
+                time.sleep(1.5)
+                self.add_fri(SendVerfication)
+
         except Exception as e:
             print(traceback.print_exc())
 

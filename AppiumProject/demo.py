@@ -14,5 +14,5 @@ desired_cups['appActivity'] = 'com.grandsoft.intercom.SplashActivity'
 
 driver = webdriver.Remote('http://localhost:4723/wd/hub',desired_cups)
 
-driver.find_element_by_name('').clear()
+driver.find_element_by_name('').get_attribute()
 

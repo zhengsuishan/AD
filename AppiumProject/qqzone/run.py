@@ -11,13 +11,11 @@ if __name__ == '__main__':
     package = 'com.qzone'
     activity = 'com.tencent.sc.activity.SplashActivity'
 
-    SendVerfication.set_udid(SendVerfication, udid)
-
     InitPara.set_desired_caps(InitPara, udid, package, activity)
     desired_caps = InitPara.get_desired_caps(InitPara)
 
     driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
-    InitDriver.set_driver(InitDriver, driver)
 
+    SendVerfication.set_udid_driver(SendVerfication, udid, driver)
     SendVerfication.launch_app(SendVerfication)
     SendVerfication.add_fri(SendVerfication)
