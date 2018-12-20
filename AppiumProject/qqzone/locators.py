@@ -22,3 +22,8 @@ class Locators(object):
     MASTER_ANSWER = (By.NAME, '主人设置了权限，答对问题后可访问')
 
     QINMI = (By.NAME, '亲密度')
+
+    SS = (By.NAME, '说说')
+    XC = (By.NAME, '相册')
+    RZ = (By.NAME, '日志')
+    LY = (By.NAME, '留言')

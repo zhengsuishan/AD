@@ -23,6 +23,8 @@ class SendVerfication(object):
         self.udid = udid
         self.driver = driver
 
+    swipe_times = None
+
     #获取文案
     def get_text(self):
         text1 = ''
@@ -79,6 +81,8 @@ class SendVerfication(object):
                     'text')
                 pl_num = int(pl_num)
 
+                self.swipe_times = pl_num
+
                 # 判断评论数是否大于100
                 if pl_num >= 100:
                     self.driver.find_element(Locators.USER_COMMENT[0], Locators.USER_COMMENT[1]).click()
@@ -91,7 +95,27 @@ class SendVerfication(object):
                 lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
             self.driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]).click()  # 点击用户头像
 
-            if Locators.ADD_TEXT[1] in self.driver.page_source:
+            time.sleep(5.0)
+
+            if Locators.QINMI[1] in self.driver.page_source:
+                os.popen(back_cmd)
+                time.sleep(1.5)
+                os.popen(swipe_cmd_user)
+                time.sleep(1.5)
+                self.add_fri(SendVerfication)
+            elif Locators.APPLY[1] in self.driver.page_source and Locators.ADD_TEXT_1[1] not in self.driver.page_source:
+                os.popen(back_cmd)
+                time.sleep(1.5)
+                os.popen(swipe_cmd_user)
+                time.sleep(1.5)
+                self.add_fri(SendVerfication)
+            elif Locators.SS[1] in self.driver.page_source and Locators.XC[1] in self.driver.page_source and Locators.RZ[1] in self.driver.page_source and Locators.LY[1] in self.driver.page_source:
+                os.popen(back_cmd)
+                time.sleep(1.5)
+                os.popen(swipe_cmd_user)
+                time.sleep(1.5)
+                self.add_fri(SendVerfication)
+            elif Locators.ADD_TEXT[1] in self.driver.page_source:
                 WebDriverWait(self.driver, self.wait_time).until(
                     lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
                 self.driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]).click()  # 点击加为好友
@@ -117,7 +141,7 @@ class SendVerfication(object):
                 self.user_swipe_times += 1
 
                 # 判断一个视频的评论数-5 >=划动次数
-                if pl_num - 5 >= self.user_swipe_times:
+                if self.swipe_times - 5 <= self.user_swipe_times:
                     os.popen(back_cmd)
                     WebDriverWait(self.driver, self.wait_time).until(
                         lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
