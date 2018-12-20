@@ -18,3 +18,7 @@ class Locators(object):
 
     VERFICATION = (By.NAME, '请输入验证信息')
     SUBMIT = (By.NAME, '提交')
+    ANSWER = (By.NAME, '回答问题')
+    MASTER_ANSWER = (By.NAME, '主人设置了权限，答对问题后可访问')
+
+    QINMI = (By.NAME, '亲密度')
