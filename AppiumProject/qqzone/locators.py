@@ -8,9 +8,13 @@ class Locators(object):
     MAIN_PAGE_ME = (By.NAME, '我')  # 首页我
     MAIN_PAGE_VIDEO = (By.NAME, '小视频')  # 首页小视频
 
+    SAY = (By.NAME, '说点什么...')
+
     USER_ID = (By.ID, 'com.qzone:id/avatar') #用户头像id
     USER_COMMENT = (By.ID, 'com.qzone:id/video_comment') #用户评论
     ADD_TEXT = (By.NAME, '加为好友') #加为好友文本
+    APPLY = (By.NAME, '申请访问')
+    ADD_TEXT_1 = (By.NAME, '加为好友')
 
     VERFICATION = (By.NAME, '请输入验证信息')
     SUBMIT = (By.NAME, '提交')
