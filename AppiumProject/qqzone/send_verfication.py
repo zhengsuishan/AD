@@ -25,9 +25,9 @@ class SendVerfication(object):
 
     #获取文案
     def get_text(self):
-        text1 = ''
-        text2 = ''
-        text3 = ''
+        text1 = '嗨，加个好友呀'
+        text2 = '你好呀，交个朋友'
+        text3 = '哈喽，加个好友呀'
         text_list = [text1, text2, text3]
         size = len(text_list)
         index = random.randint(-1, size - 1)
