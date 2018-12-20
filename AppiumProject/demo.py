@@ -1,5 +1,6 @@
 from appium import webdriver
 
+
 desired_cups = {}
 
 desired_cups['platformName'] = 'Android'
@@ -14,5 +15,5 @@ desired_cups['appActivity'] = 'com.grandsoft.intercom.SplashActivity'
 
 driver = webdriver.Remote('http://localhost:4723/wd/hub',desired_cups)
 
-driver.find_element_by_name('').get_attribute()
+driver.get_screenshot_as_png()
 

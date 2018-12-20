@@ -14,6 +14,7 @@ class Locators(object):
     USER_COMMENT = (By.ID, 'com.qzone:id/video_comment') #用户评论
     ADD_TEXT = (By.NAME, '加为好友') #加为好友文本
     APPLY = (By.NAME, '申请访问')
+    ADD_TEXT_1 = (By.NAME, '加为好友')
 
     VERFICATION = (By.NAME, '请输入验证信息')
     SUBMIT = (By.NAME, '提交')
