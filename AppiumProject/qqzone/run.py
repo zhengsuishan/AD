@@ -7,7 +7,7 @@ from AppiumProject.qqzone.send_verfication import SendVerfication
 
 if __name__ == '__main__':
     driver = None
-    udid = 'd102deb37d13'
+    udid = '127.0.0.1:62001'
     package = 'com.qzone'
     activity = 'com.tencent.sc.activity.SplashActivity'
 

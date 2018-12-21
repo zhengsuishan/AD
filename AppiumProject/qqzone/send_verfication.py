@@ -12,8 +12,8 @@ class SendVerfication(object):
 
     udid = None
 
-    launch_time = 15
-    wait_time = 5
+    launch_time = 30
+    wait_time = 15
     driver = None
 
     send_times = None
@@ -52,7 +52,7 @@ class SendVerfication(object):
                 lambda driver: driver.find_element(Locators.MAIN_PAGE_VIDEO[0], Locators.MAIN_PAGE_VIDEO[1]))
             self.driver.find_element(Locators.MAIN_PAGE_VIDEO[0], Locators.MAIN_PAGE_VIDEO[1]).click()
         except Exception as e:
-            print(traceback.print_exc())
+            self.exception_do(SendVerfication)
 
     def add_fri(self):
         swipe_cmd_user = 'adb -s %s shell input swipe %d %d %d %d %d' % (self.udid, 360, 640, 360, 640 - 145, 300)
@@ -151,10 +151,35 @@ class SendVerfication(object):
             else:
                 os.popen(back_cmd)
                 time.sleep(1.5)
+                os.popen(swipe_cmd_user)
+                time.sleep(1.5)
                 self.add_fri(SendVerfication)
 
         except Exception as e:
-            print(traceback.print_exc())
+            self.exception_do(SendVerfication)
+
+    def exception_do(self):
+        swipe_cmd_user = 'adb -s %s shell input swipe %d %d %d %d %d' % (self.udid, 360, 640, 360, 640 - 145, 300)
+        back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
+        if Locators.MAIN_PAGE_DYNAMIC[1] in self.driver.page_source and Locators.MAIN_PAGE_VIDEO[1] in self.driver.page_source and Locators.MAIN_PAGE_ME[1] in self.driver.page_source and Locators.MAIN_PAGE_NEWS[1] in self.driver.page_source:
+            self.driver.find_element(Locators.MAIN_PAGE_VIDEO[0], Locators.MAIN_PAGE_VIDEO[1]).click()
+            self.add_fri(SendVerfication)
+        elif Locators.SAY[1] in self.driver.page_source:
+            self.add_fri(SendVerfication)
+        elif Locators.ADD_TEXT_1[1] in self.driver.page_source or Locators.APPLY[1] in self.driver.page_source:
+            os.popen(back_cmd)
+            time.sleep(1.5)
+            os.popen(swipe_cmd_user)
+            time.sleep(1.5)
+            self.add_fri(SendVerfication)
+        elif Locators.VERFICATION[1] in self.driver.page_source:
+            os.popen(back_cmd)
+            time.sleep(1.5)
+            os.popen(back_cmd)
+            time.sleep(1.5)
+            self.add_fri(SendVerfication)
+        else:
+            raise '未知界面'
 
 if __name__ == '__main__':
     pass

@@ -13,7 +13,8 @@ class InitPara(object):
                              'appActivity': activity,
                              'unicodeKeyboard': True,
                              'resetKeyboard': True,
-                             'noReset': True
+                             'noReset': True,
+                             'autonationName':'UIAutomator2'
                              }
 
     def get_desired_caps(self):
