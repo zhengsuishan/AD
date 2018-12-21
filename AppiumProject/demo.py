@@ -15,5 +15,7 @@ desired_cups['appActivity'] = 'com.grandsoft.intercom.SplashActivity'
 
 driver = webdriver.Remote('http://localhost:4723/wd/hub',desired_cups)
 
-driver.get_screenshot_as_png()
+driver.find_element_by_accessibility_id()
+
+
 
