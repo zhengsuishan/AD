@@ -27,9 +27,9 @@ class SendVerfication(object):
 
     #获取文案
     def get_text(self):
-        text1 = ''
-        text2 = ''
-        text3 = ''
+        text1 = '嗨，加个好友呀'
+        text2 = '你好呀，交个朋友'
+        text3 = '加个好友啦'
         text_list = [text1, text2, text3]
         size = len(text_list)
         index = random.randint(-1, size - 1)
@@ -119,35 +119,46 @@ class SendVerfication(object):
                 WebDriverWait(self.driver, self.wait_time).until(
                     lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
                 self.driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]).click()  # 点击加为好友
-                WebDriverWait(self.driver, self.wait_time).until(
-                    lambda driver: driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]))
-                self.driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]).send_keys(
-                    self.get_text(SendVerfication))  # 输入内容
 
-                time.sleep(0.5)
-
-                self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
-                self.send_times += 1
-                self.write_count(SendVerfication, self.send_times)
-                WebDriverWait(self.driver, self.wait_time).until(
-                    lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
-                os.popen(back_cmd)
-                WebDriverWait(self.driver, self.wait_time).until(
-                    lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
-
-                # 滑动屏幕
-                os.popen(swipe_cmd_user)
                 time.sleep(1.5)
-                self.user_swipe_times += 1
+                if Locators.ANSWER[1] in self.driver.page_source:
+                    os.popen(back_cmd)
+                    time.sleep(1.5)
+                    os.popen(back_cmd)
+                    time.sleep(1.5)
+                    os.popen(swipe_cmd_user)
+                    time.sleep(1.5)
+                    self.add_fri(SendVerfication)
+                else:
+                    WebDriverWait(self.driver, self.wait_time).until(
+                        lambda driver: driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]))
+                    self.driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]).send_keys(
+                        self.get_text(SendVerfication))  # 输入内容
 
-                # 判断一个视频的评论数-5 >=划动次数
-                if self.swipe_times - 5 <= self.user_swipe_times:
+                    time.sleep(0.5)
+
+                    self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+                    self.send_times += 1
+                    self.write_count(SendVerfication, self.send_times)
+                    WebDriverWait(self.driver, self.wait_time).until(
+                        lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
                     os.popen(back_cmd)
                     WebDriverWait(self.driver, self.wait_time).until(
                         lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
-                    self.add_fri(SendVerfication)
-                else:
-                    self.add_fri(SendVerfication)
+
+                    # 滑动屏幕
+                    os.popen(swipe_cmd_user)
+                    time.sleep(1.5)
+                    self.user_swipe_times += 1
+
+                    # 判断一个视频的评论数-5 >=划动次数
+                    if self.swipe_times - 5 <= self.user_swipe_times:
+                        os.popen(back_cmd)
+                        WebDriverWait(self.driver, self.wait_time).until(
+                            lambda driver: driver.find_element(Locators.USER_ID[0], Locators.USER_ID[1]))
+                        self.add_fri(SendVerfication)
+                    else:
+                        self.add_fri(SendVerfication)
             else:
                 os.popen(back_cmd)
                 time.sleep(1.5)
