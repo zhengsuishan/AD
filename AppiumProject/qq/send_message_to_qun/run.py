@@ -6,6 +6,9 @@ from AppiumProject.common.init_driver import InitDriver
 from AppiumProject.qq.send_message_to_qun.init_para import InitParm
 from AppiumProject.qq.send_message_to_qun.send_to_qun import SendToQun
 
+import os
+import time
+
 if __name__ == '__main__':
 
     driver = None

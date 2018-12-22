@@ -114,8 +114,6 @@ class SendToQun(object):
                         time.sleep(1.0)
                         os.popen(self.back_cmd)
                         time.sleep(1.0)
-                        os.popen(self.back_cmd)
-                        time.sleep(1.0)
                         self.qun_list_index += 1
                         self.go_qun_list(SendToQun)
                         self.send(SendToQun)
@@ -124,7 +122,7 @@ class SendToQun(object):
                 time.sleep(1.0)
                 self.swipe_count += 1
 
-                if self.swipe_count >= 2:
+                if self.swipe_count >= 5:
                     self.qun_list_index += 1
                 else:
                     pass
@@ -195,8 +193,23 @@ class SendToQun(object):
                 pass
 
             if text == 1:
-                WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]))
+
+                try:
+                    WebDriverWait(self.driver, self.wait_time).until(
+                        lambda driver: driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]))
+                except Exception as e:
+                    # 处理群消息
+                    if Locators.QUN_TZ[1] in self.driver.page_source:
+                        self.driver.find_element(Locators.QUN_TZ[0], Locators.QUN_TZ[1]).click()
+                        time.sleep(1.5)
+                    else:
+                        self.driver.get_screenshot_as_file('error.png')
+                        time.sleep(3.0)
+                        raise '未知界面'
+
                 self.driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]).send_keys(self.send_text)
+                time.sleep(1.0)
+                self.driver.find_element(Locators.SEND[0], Locators.SEND[1]).click()
                 time.sleep(1.0)
                 self.driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]).send_keys(self.send_text1)
                 time.sleep(1.0)

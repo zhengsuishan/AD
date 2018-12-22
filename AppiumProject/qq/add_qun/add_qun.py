@@ -15,6 +15,7 @@ class AddQun(object):
     wait_time = 5
     qun_num = []
     udid = None
+    send_time = 0 #计算点击发送的次数，处理发送频繁的情况
 
     def get_qun_num(self):
         num_list = ['0', '1', '2', '3', '4' ,'5' ,'6' ,'7' ,'8' ,'9']
@@ -110,16 +111,34 @@ class AddQun(object):
                 else:
                     # 判断是否需要填写问题
                     if Locators.PERSON[1] in self.driver.page_source:
-                        self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+
+                        #判断是否发送频繁
+                        while self.send_time <= 3:
+                            self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+                            self.send_time += 1
+                            time.sleep(1.5)
+                            if Locators.SUBMIT[1] in self.driver.page_source:
+                                pass
+                            else:
+                                self.send_time = 4
+                        else:
+                            if Locators.SUBMIT[1] in self.driver.page_source:
+                                self.driver.get_screenshot_as_file('pinfan.png')
+                                self.driver = None
+                                exit()
+
+
                         WebDriverWait(self.driver, self.wait_time).until(
                             lambda driver: driver.find_element(Locators.SEND_SUCCESS[0], Locators.SEND_SUCCESS[1]))
+
+                        #发送次数赋值0
+                        self.send_time = 0
+
                         os.popen(back_cmd)
                         WebDriverWait(self.driver, self.wait_time).until(
                             lambda driver: driver.find_element(Locators.CLEAR[0], Locators.CLEAR[1]))
                         self.go_verfication(AddQun)
                     else:
-                        time.sleep(10)
-                        print('未知界面')
                         os.popen(back_cmd)
                         time.sleep(1.0)
                         os.popen(back_cmd)
@@ -160,11 +179,33 @@ class AddQun(object):
                 else:
                     self.apply_add_qun(AddQun)
         elif Locators.APPLY_ADD_QUN[1] in self.driver.page_source:
-            self.apply_add_qun(AddQun)
+            os.popen(back_cmd)
+            time.sleep(1.5)
+            self.go_verfication(AddQun)
+
         elif Locators.PERSON[1] in self.driver.page_source:
             self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+
+            # 判断是否发送频繁
+            while self.send_time <= 3:
+                self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+                self.send_time += 1
+                time.sleep(1.5)
+                if Locators.SUBMIT[1] in self.driver.page_source:
+                    pass
+                else:
+                    self.send_time = 4
+            else:
+                if Locators.SUBMIT[1] in self.driver.page_source:
+                    self.driver = None
+                    exit()
+
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda driver: driver.find_element(Locators.SEND_SUCCESS[0], Locators.SEND_SUCCESS[1]))
+
+            #恢复发送次数
+            self.send_time = 0
+
             os.popen(back_cmd)
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda driver: driver.find_element(Locators.CLEAR[0], Locators.CLEAR[1]))
@@ -180,7 +221,8 @@ class AddQun(object):
             self.go_verfication(AddQun)
         else:
             self.driver.get_screenshot_as_file('error.png')
-            raise '未知界面'
+            time.sleep(3.0)
+            self.exce_do(AddQun)
 
 if __name__ == '__main__':
     print(AddQun.get_qun_num(AddQun))

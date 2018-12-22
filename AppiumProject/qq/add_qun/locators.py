@@ -32,3 +32,5 @@ class Locators(object):
 
     SEND_MESSAGE = (By.NAME, '发消息')
     RIGHT_ID = (By.ID, 'com.tencent.mobileqq:id/ivTitleBtnRightImage')
+
+    INPUT_ANSWER = (By.NAME, '输入答案')

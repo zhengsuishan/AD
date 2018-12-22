@@ -22,3 +22,5 @@ class Locators(object):
     BIAN_JI = (By.NAME, '编辑')
     YUAN_TU = (By.NAME, '原图')
 
+    QUN_TZ = (By.NAME, '我知道了')
+
