@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
 # 判断当前是哪个界面，返回主界面
-from AppiumProject.common.init_driver import InitDriver
-from AppiumProject.qq.init_para import InitParm
-from AppiumProject.qq.locators import Locators
-import time
 import os
+import time
+
+from AppiumProject.common.init_driver import InitDriver
+from AppiumProject.qq.send_message_to_qun.init_para import InitParm
+from AppiumProject.qq.send_message_to_qun.locators import Locators
+
 
 class MainPage(object):
 

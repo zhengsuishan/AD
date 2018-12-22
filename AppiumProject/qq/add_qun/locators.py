@@ -25,3 +25,10 @@ class Locators(object):
     PERSON = (By.NAME, '个人介绍')
     SUBMIT = (By.NAME, '发送')
     SEND_SUCCESS = (By.NAME, '发送成功')
+
+    FIND_RES = (By.NAME, '查找结果')
+
+    QUN_PEOPLE_NUM = (By.ID, 'com.tencent.mobileqq:id/info')
+
+    SEND_MESSAGE = (By.NAME, '发消息')
+    RIGHT_ID = (By.ID, 'com.tencent.mobileqq:id/ivTitleBtnRightImage')

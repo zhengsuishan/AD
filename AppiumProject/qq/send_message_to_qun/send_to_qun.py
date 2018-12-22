@@ -1,13 +1,16 @@
 # -*- coding:utf-8 -*-
 
-from AppiumProject.qq.init_para import InitParm
-from AppiumProject.common.init_driver import InitDriver
-from selenium.webdriver.support.wait import WebDriverWait
-from AppiumProject.qq.main_page import MainPage
-from AppiumProject.qq.locators import Locators
-import time
 import os
+import time
 import traceback
+
+from selenium.webdriver.support.wait import WebDriverWait
+
+from AppiumProject.common.init_driver import InitDriver
+from AppiumProject.qq.send_message_to_qun.init_para import InitParm
+from AppiumProject.qq.send_message_to_qun.locators import Locators
+from AppiumProject.qq.send_message_to_qun.main_page import MainPage
+
 
 class SendToQun(object):
 
@@ -35,6 +38,7 @@ class SendToQun(object):
 
     pic_index = InitParm.index
     send_text = InitParm.send_text
+    send_text1 = InitParm.send_text1
     text = InitParm.text
 
     command1 = 'adb -s %s shell settings get secure default_input_method'%udid
@@ -99,7 +103,7 @@ class SendToQun(object):
                     self.go_qun_list(SendToQun)
                     self.send(SendToQun)
                 else:
-                    if self.send_text in self.driver.page_source:
+                    if self.send_text1 in self.driver.page_source:
                         os.popen(self.back_cmd)
                         time.sleep(1.0)
                         self.qun_list_index += 1
@@ -193,6 +197,8 @@ class SendToQun(object):
             if text == 1:
                 WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]))
                 self.driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]).send_keys(self.send_text)
+                time.sleep(1.0)
+                self.driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]).send_keys(self.send_text1)
                 time.sleep(1.0)
                 self.driver.find_element(Locators.SEND[0], Locators.SEND[1]).click()
                 time.sleep(1.0)
