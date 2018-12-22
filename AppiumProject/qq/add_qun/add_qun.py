@@ -6,6 +6,7 @@ from AppiumProject.qq.add_qun.locators import Locators
 import random
 import time
 import traceback
+import os
 
 class AddQun(object):
 
@@ -56,6 +57,28 @@ class AddQun(object):
         except Exception as e:
             print(traceback.print_exc())
 
+    #申请加群
+    def apply_add_qun(self):
+        back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
+
+        self.driver.find_element(Locators.APPLY_ADD_QUN[0], Locators.APPLY_ADD_QUN[1]).click()
+        time.sleep(3.0)
+
+        #判断是否需要填写问题
+        if Locators.PERSON[1] in self.driver.page_source:
+            self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
+            WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.SEND_SUCCESS[0], Locators.SEND_SUCCESS[1]))
+            os.popen(back_cmd)
+            WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.CLEAR[0], Locators.CLEAR[1]))
+            self.go_verfication(AddQun)
+        else:
+            time.sleep(10)
+            print('未知界面')
+            os.popen(back_cmd)
+            time.sleep(1.0)
+            os.popen(back_cmd)
+            time.sleep(1.0)
+            self.go_verfication(AddQun)
 
 if __name__ == '__main__':
     print(AddQun.get_qun_num(AddQun))

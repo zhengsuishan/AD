@@ -20,3 +20,8 @@ class Locators(object):
     NOT_QUN = (By.NAME, '没有找到相关结果')
     SEARCH_ID = (By.ID, 'com.tencent.mobileqq:id/et_search_keyword') #搜索框id
     CLEAR = (By.ID, 'com.tencent.mobileqq:id/ib_clear_text') #清空输入框按钮
+
+    APPLY_ADD_QUN = (By.NAME, '申请加群')
+    PERSON = (By.NAME, '个人介绍')
+    SUBMIT = (By.NAME, '发送')
+    SEND_SUCCESS = (By.NAME, '发送成功')
