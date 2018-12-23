@@ -6,7 +6,7 @@ import os
 class PiaoLiuPing(object):
 
     driver = None
-    send_message = '发朋友圈赚佣金，想做联系我 '
+    send_message = 'http://toutiao.1kbnt.cn/huitoutiao/news-share.html?id=0b3cd422f35441a2bd566a79a6f61b02'
     #send_message = '打开支付宝首页搜索“499754”，即可领红包，每天都可以领取哦，支付宝福利，快去试试吧；没有支付宝赶紧下载https://m.alipay.com/DPlKoAc，注册即可领取现金红包。'
     #send_message = '好有缘分呀，加个好友吧，哈哈'
     #send_message = 'https://m.042h4.cn/forms/FrmRegister?recomPerson=1671b80f20d&device=phone，复制到浏览器，下载安装就送10元红包，提现秒到账，不要白不要。'
@@ -14,8 +14,8 @@ class PiaoLiuPing(object):
     index = 0
     pick_times = 20
     pick_index = 0
-    #xiaomi_udid = 'd102deb37d13'
-    xiaomi_udid = '0123456789ABCDEF'
+    xiaomi_udid = 'd102deb37d13'
+    #xiaomi_udid = '0123456789ABCDEF'
 
     def get_driver(self):
         desired_caps = {}

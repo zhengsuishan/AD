@@ -87,6 +87,7 @@ class AddQun(object):
                 else:
                     self.apply_add_qun(AddQun)
         except Exception as e:
+            print(traceback.print_exc())
             self.exce_do(AddQun)
 
     #申请加群
@@ -122,8 +123,8 @@ class AddQun(object):
                             else:
                                 self.send_time = 4
                         else:
-                            if Locators.SUBMIT[1] in self.driver.page_source:
-                                self.driver.get_screenshot_as_file('pinfan.png')
+                            if Locators.SUBMIT[1] in self.driver.page_source and Locators.PERSON[1] in self.driver.page_source and Locators.SEND_SUCCESS[1] not in self.driver.page_source:
+                                self.driver.get_screenshot_as_file('%d.png'%self.send_time)
                                 self.driver = None
                                 exit()
 
@@ -149,6 +150,7 @@ class AddQun(object):
                 time.sleep(1.5)
                 self.go_verfication(AddQun)
         except Exception as e:
+            print(traceback.print_exc())
             self.exce_do(AddQun)
 
     def element(self, locator):
@@ -184,7 +186,6 @@ class AddQun(object):
             self.go_verfication(AddQun)
 
         elif Locators.PERSON[1] in self.driver.page_source:
-            self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
 
             # 判断是否发送频繁
             while self.send_time <= 3:
@@ -196,7 +197,8 @@ class AddQun(object):
                 else:
                     self.send_time = 4
             else:
-                if Locators.SUBMIT[1] in self.driver.page_source:
+                if Locators.SUBMIT[1] in self.driver.page_source and Locators.PERSON[1] in self.driver.page_source and Locators.SEND_SUCCESS[1] not in self.driver.page_source:
+                    self.driver.get_screenshot_as_file('%d.png'%self.send_time)
                     self.driver = None
                     exit()
 
