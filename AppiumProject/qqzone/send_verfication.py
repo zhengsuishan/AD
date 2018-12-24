@@ -103,21 +103,14 @@ class SendVerfication(object):
                 os.popen(swipe_cmd_user)
                 time.sleep(1.5)
                 self.add_fri(SendVerfication)
-            elif Locators.APPLY[1] in self.driver.page_source and Locators.ADD_TEXT_1[1] not in self.driver.page_source:
-                os.popen(back_cmd)
-                time.sleep(1.5)
-                os.popen(swipe_cmd_user)
-                time.sleep(1.5)
-                self.add_fri(SendVerfication)
-            elif Locators.SS[1] in self.driver.page_source and Locators.XC[1] in self.driver.page_source and Locators.RZ[1] in self.driver.page_source and Locators.LY[1] in self.driver.page_source:
+            elif Locators.SS[1] in self.driver.page_source and Locators.XC[1] in self.driver.page_source and Locators.RZ[1] in self.driver.page_source and Locators.LY[1] in self.driver.page_source and Locators.ADD_TEXT[1] not in self.driver.page_source:
                 os.popen(back_cmd)
                 time.sleep(1.5)
                 os.popen(swipe_cmd_user)
                 time.sleep(1.5)
                 self.add_fri(SendVerfication)
             elif Locators.ADD_TEXT[1] in self.driver.page_source:
-                WebDriverWait(self.driver, self.wait_time).until(
-                    lambda driver: driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]))
+                print('点击加好友')
                 self.driver.find_element(Locators.ADD_TEXT[0], Locators.ADD_TEXT[1]).click()  # 点击加为好友
 
                 time.sleep(1.5)
@@ -135,7 +128,7 @@ class SendVerfication(object):
                     self.driver.find_element(Locators.VERFICATION[0], Locators.VERFICATION[1]).send_keys(
                         self.get_text(SendVerfication))  # 输入内容
 
-                    time.sleep(0.5)
+                    time.sleep(1.5)
 
                     self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
                     self.send_times += 1
@@ -160,6 +153,7 @@ class SendVerfication(object):
                     else:
                         self.add_fri(SendVerfication)
             else:
+                print('返回上一级')
                 os.popen(back_cmd)
                 time.sleep(1.5)
                 os.popen(swipe_cmd_user)

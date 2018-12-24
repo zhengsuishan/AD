@@ -67,6 +67,8 @@ class SendToQun(object):
         try:
             WebDriverWait(self.driver, self.launch_time).until(lambda driver:driver.find_element(Locators.CONTACT[0], Locators.CONTACT[1]))
             self.driver.find_element(Locators.CONTACT[0], Locators.CONTACT[1]).click()
+            WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.QUN_CHAT[0], Locators.QUN_CHAT[1]))
+            self.driver.find_element(Locators.QUN_CHAT[0], Locators.QUN_CHAT[1]).click()
             WebDriverWait(self.driver, self.wait_time).until(lambda driver:driver.find_element(Locators.QUN_NAME_ID[0], Locators.QUN_NAME_ID[1]))
         except Exception as e:
             print(traceback.print_exc())
@@ -205,7 +207,6 @@ class SendToQun(object):
                     else:
                         self.driver.get_screenshot_as_file('error.png')
                         time.sleep(3.0)
-                        raise '未知界面'
 
                 self.driver.find_element(Locators.SENG_INPUT[0], Locators.SENG_INPUT[1]).send_keys(self.send_text)
                 time.sleep(1.0)

@@ -24,3 +24,5 @@ class Locators(object):
 
     QUN_TZ = (By.NAME, '我知道了')
 
+    QUN_CHAT = (By.NAME, '群聊')
+
