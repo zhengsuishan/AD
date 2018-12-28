@@ -16,9 +16,10 @@ class AddQun(object):
     qun_num = []
     udid = None
     send_time = 0 #计算点击发送的次数，处理发送频繁的情况
+    index = -1
 
     def get_qun_num(self):
-        num_list = ['0', '1', '2', '3', '4' ,'5' ,'6' ,'7' ,'8' ,'9']
+        '''num_list = ['0', '1', '2', '3', '4' ,'5' ,'6' ,'7' ,'8' ,'9']
 
         qun_len = random.randint(6, 8)
 
@@ -26,7 +27,18 @@ class AddQun(object):
             index = random.randint(-1, len(num_list) - 1)
             self.qun_num.append(num_list[index])
 
-        return ''.join(self.qun_num)
+        return ''.join(self.qun_num)'''
+        file = open('qun_num')
+        res = file.readlines()
+        if self.index >= len(res):
+            file.close()
+            file = open('qun_num', 'w+')
+            file.truncate()
+            file.close()
+            exit()
+        else:
+            self.index += 1
+            return res[self.index].strip()
 
     def set_driver(self, driver, udid):
         self.driver = driver
@@ -87,7 +99,6 @@ class AddQun(object):
                 else:
                     self.apply_add_qun(AddQun)
         except Exception as e:
-            print(traceback.print_exc())
             self.exce_do(AddQun)
 
     #申请加群
@@ -95,10 +106,14 @@ class AddQun(object):
         try:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
 
-            text = self.driver.find_element(Locators.QUN_PEOPLE_NUM[0], Locators.QUN_PEOPLE_NUM[1]).get_attribute(
-                'text')
-            text = text.split('人')
-            num = int(text[0])
+            if '群位置' in self.driver.page_source:
+                num = 11
+            else:
+                text = self.driver.find_element(Locators.QUN_PEOPLE_NUM[0], Locators.QUN_PEOPLE_NUM[1]).get_attribute(
+                    'text')
+
+                text = text.split('人')
+                num = int(text[0])
             # 判断群人数是否大于10
             if num >= 10:
                 self.driver.find_element(Locators.APPLY_ADD_QUN[0], Locators.APPLY_ADD_QUN[1]).click()  # 点击申请加群
@@ -150,7 +165,6 @@ class AddQun(object):
                 time.sleep(1.5)
                 self.go_verfication(AddQun)
         except Exception as e:
-            print(traceback.print_exc())
             self.exce_do(AddQun)
 
     def element(self, locator):

@@ -6,7 +6,7 @@ import os
 class PiaoLiuPing(object):
 
     driver = None
-    send_message = 'http://toutiao.1kbnt.cn/huitoutiao/news-share.html?id=0b3cd422f35441a2bd566a79a6f61b02'
+    send_message = '东方头条【【热】痛心！北交大实验室爆炸起火，3名-学-生-遇-难-】https://mini.eastday.com/mobile/181226172641446.html?ca=809682829&f1=xq1'
     #send_message = '打开支付宝首页搜索“499754”，即可领红包，每天都可以领取哦，支付宝福利，快去试试吧；没有支付宝赶紧下载https://m.alipay.com/DPlKoAc，注册即可领取现金红包。'
     #send_message = '好有缘分呀，加个好友吧，哈哈'
     #send_message = 'https://m.042h4.cn/forms/FrmRegister?recomPerson=1671b80f20d&device=phone，复制到浏览器，下载安装就送10元红包，提现秒到账，不要白不要。'
@@ -27,7 +27,11 @@ class PiaoLiuPing(object):
         desired_caps['udid'] = self.xiaomi_udid
         desired_caps['unicodeKeyboard'] = 'true'
         desired_caps['resetKeyboard'] = 'true'
+        desired_caps['noReset'] = 'true'
         try:
+            command3 = 'adb -s %s shell ime set io.appium.android.ime/.UnicodeIME' % self.xiaomi_udid
+            os.popen(command3)
+            time.sleep(1.0)
             self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
             WebDriverWait(self.driver, 15).until(lambda x: x.find_element_by_name('发现'))
         except Exception as e:

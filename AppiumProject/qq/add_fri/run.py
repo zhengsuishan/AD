@@ -23,5 +23,4 @@ if __name__ == '__main__':
     time.sleep(3.0)
 
     AddFriend.set_driver_udid_appinfo(AddFriend, driver, udid, package, start_activity)
-    AddFriend.start_app(AddFriend)
     AddFriend.go_add(AddFriend)

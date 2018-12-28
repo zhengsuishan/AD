@@ -1,21 +1,27 @@
-from appium import webdriver
+import logging
+from appium impor
+class LogConfig:
+    @staticmethod
+    def init(path):
+        global logger
+
+        if not os.path.exists('./log'):
+            os.mkdir('./log')
+
+        nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logging.basicConfig(level=logging.INFO,
+                            format='%(asctime)s %(levelname)s %(message)s',
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            filename = './log/'+nowTime+'.log',
+                            filemode='a')
+        logger = logging.getLogger()
 
 
-desired_cups = {}
+    @staticmethod
+    def getLogger():
+        return logger
 
-desired_cups['platformName'] = 'Android'
-
-desired_cups['platformVersion'] = '5.0.2'
-
-desired_cups['deviceName'] = 'HuaWei'
-
-desired_cups['appPackage'] = 'com.grandsoft.intercom'
-
-desired_cups['appActivity'] = 'com.grandsoft.intercom.SplashActivity'
-
-driver = webdriver.Remote('http://localhost:4723/wd/hub',desired_cups)
-
-driver.get_screenshot_as_file()
-
-
+if __name__ == '__main__':
+    LogConfig.init()
+    LogConfig.getLogger()
 

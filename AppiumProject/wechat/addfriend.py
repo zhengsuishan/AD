@@ -9,8 +9,8 @@ import traceback
 class AddFriend(object):
 
     driver = None
-    #xiaomi_udid = 'd102deb37d13'
-    xiaomi_udid = '0123456789ABCDEF'
+    xiaomi_udid = 'd102deb37d13'
+    #xiaomi_udid = '0123456789ABCDEF'
     launch_time = 15
     wait_time = 3
     net_wait_time = 5
@@ -29,7 +29,11 @@ class AddFriend(object):
         desired_caps['udid'] = self.xiaomi_udid
         desired_caps['unicodeKeyboard'] = 'true'
         desired_caps['resetKeyboard'] = 'true'
+        desired_caps['noReset'] = 'true'
         try:
+            command3 = 'adb -s %s shell ime set io.appium.android.ime/.UnicodeIME' % self.xiaomi_udid
+            os.popen(command3)
+            time.sleep(1.0)
             self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
             WebDriverWait(self.driver, self.launch_time).until(lambda x: x.find_element_by_id('com.tencent.mm:id/hu'))
         except Exception as e:

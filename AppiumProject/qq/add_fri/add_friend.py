@@ -53,21 +53,13 @@ class AddFriend(object):
         self.package = package
         self.activity = activity
 
-    def start_app(self):
-        #读取发送次数
-        self.send_times = self.read_count(AddFriend)
-
-        if '消息' in self.driver.page_source and '联系人' in self.driver.page_source and '看点' in self.driver.page_source and '动态' in self.driver.page_source:
-            pass
-        else:
-            pass
-
     def adb_cmd(self, cmd, tap_x=100, tap_y=100, text='text'):
         start_cmd = 'adb -s %s shell am start %s' % (self.udid, self.activity)
         back_cmd = 'adb -s % shell input keyevent 4' % self.udid
         tap_cmd = 'adb -s %s shell input tap %d %d' % (self.udid, tap_x, tap_y)
         input_cmd = 'adb -s %s shell input text %s'%(self.udid, text)
         del_cmd = 'adb shell input keyevent 67'
+        long_press = 'adb -s %s shell input swipe 360 445 360 445 1000'%self.udid
         if cmd == 'start':
             os.popen(start_cmd)
         elif cmd == 'back':
@@ -78,10 +70,15 @@ class AddFriend(object):
             os.popen(input_cmd)
         elif cmd == 'del':
             os.popen(del_cmd)
+        elif cmd == 'long_press':
+            os.popen(long_press)
         else:
             pass
 
     def go_add(self):
+        # 读取发送次数
+        self.send_times = self.read_count(AddFriend)
+
         if '找人:' in self.driver.page_source or '没有找到相关结果' in self.driver.page_source:
             self.adb_cmd(AddFriend, 'tap', 546, 93)  # 点击清空输入框按钮
             time.sleep(self.wait_time)
@@ -93,6 +90,9 @@ class AddFriend(object):
             self.adb_cmd(AddFriend, 'tap', 360, 314)  # 点击输入框
             time.sleep(self.wait_time)
         self.adb_cmd(AddFriend, cmd='text', text=self.get_qun_num(AddFriend)) #输入号码
+
+        self.qun_num = []
+
         time.sleep(self.wait_time)
 
         if '找人:' in self.driver.page_source:
@@ -110,12 +110,9 @@ class AddFriend(object):
                     self.go_add(AddFriend)
                 else:
                     if '填写验证信息' in self.driver.page_source:
-                        self.adb_cmd(AddFriend, 'tap', 360, 445)  # 点击输入框，获取焦点
-                        time.sleep(self.wait_time)
-                        for times in range(0, 50):
-                            self.adb_cmd(AddFriend, 'del')
-                        time.sleep(self.wait_time)
-                        self.adb_cmd(AddFriend, 'text', self.get_text(AddFriend))
+                        print('111111111111111111111111')
+
+                        self.adb_cmd(AddFriend, 'text', '', '', self.get_text(AddFriend))
                         time.sleep(self.wait_time)
                         self.adb_cmd(AddFriend, 'tap', 652, 99.5)  # 点击发送按钮
                         time.sleep(self.net_wait_time)
@@ -124,6 +121,7 @@ class AddFriend(object):
                         self.send_times += 1
                         self.write_count(AddFriend, self.send_times)
 
+                        print('3333333333333333333333333')
                         self.adb_cmd(AddFriend, 'back')
                         time.sleep(self.wait_time)
                         self.go_add(AddFriend)
@@ -138,8 +136,8 @@ class AddFriend(object):
 
             elif '发消息' in self.driver.page_source:
                 self.adb_cmd(AddFriend, 'back')
-            else:
-                self.adb_cmd(AddFriend, 'back')
+            elif '没有找到相关结果' in self.driver.page_source:
+                self.go_add(AddFriend)
         else:
             self.adb_cmd(AddFriend, 'tap', 546, 93)  # 点击清空输入框按钮
             time.sleep(self.wait_time)
@@ -149,5 +147,6 @@ class AddFriend(object):
         pass
 
 if __name__ == '__main__':
-    pass
+    for times in range(0, len(AddFriend.get_text(AddFriend))):
+        AddFriend.adb_cmd(AddFriend, 'del')
 
