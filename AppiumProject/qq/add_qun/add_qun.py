@@ -177,6 +177,7 @@ class AddQun(object):
     #异常处理
     def exce_do(self):
         back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
+        start_cmd = 'adb -s %s shell am start com.tencent.mobileqq/.activity.SplashActivity'%self.udid
         if Locators.QQ_PHONE_PUBLIC[1] in self.driver.page_source and Locators.FIND_QUN[1] not in self.driver.page_source:
             self.go_verfication(AddQun)
         elif Locators.FIND_QUN_NUM[1] in self.driver.page_source:
@@ -236,7 +237,7 @@ class AddQun(object):
             time.sleep(1.5)
             self.go_verfication(AddQun)
         else:
-            self.driver.get_screenshot_as_file('error.png')
+            os.popen(start_cmd)
             time.sleep(3.0)
             self.exce_do(AddQun)
 
