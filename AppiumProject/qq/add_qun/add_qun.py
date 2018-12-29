@@ -38,6 +38,7 @@ class AddQun(object):
             exit()
         else:
             self.index += 1
+            print(res[self.index].strip())
             return res[self.index].strip()
 
     def set_driver(self, driver, udid):
