@@ -233,10 +233,6 @@ class AddQun(object):
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda driver: driver.find_element(Locators.CLEAR[0], Locators.CLEAR[1]))
             self.go_verfication(AddQun)
-        elif self.element(AddQun, Locators.RIGHT_ID):
-            os.popen(back_cmd)
-            time.sleep(1.5)
-            self.go_verfication(AddQun)
         else:
             os.popen(start_cmd)
             time.sleep(3.0)
