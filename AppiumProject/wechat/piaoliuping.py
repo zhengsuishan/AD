@@ -6,7 +6,7 @@ import os
 class PiaoLiuPing(object):
 
     driver = None
-    send_message = '东方头条【【热】痛心！北交大实验室爆炸起火，3名-学-生-遇-难-】https://mini.eastday.com/mobile/181226172641446.html?ca=809682829&f1=xq1'
+    send_message = '东方头条【【精选】没孙俪漂亮，演了6次女一号也没红，28岁嫁爱情，被宠-得-像-公-主-】https://mini.eastday.com/mobile/190102094211504.html?ca=809169121&f1=xq1'
     #send_message = '打开支付宝首页搜索“499754”，即可领红包，每天都可以领取哦，支付宝福利，快去试试吧；没有支付宝赶紧下载https://m.alipay.com/DPlKoAc，注册即可领取现金红包。'
     #send_message = '好有缘分呀，加个好友吧，哈哈'
     #send_message = 'https://m.042h4.cn/forms/FrmRegister?recomPerson=1671b80f20d&device=phone，复制到浏览器，下载安装就送10元红包，提现秒到账，不要白不要。'

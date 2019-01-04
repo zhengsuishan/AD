@@ -12,7 +12,7 @@ class QunMessage(object):
     driver = None
     swipeDur = 87 #滑动间距
     launch_time = 60 #启动时间
-    file_name = 'C:\\Users\\zss\\Desktop\\data.xls' #文件路径
+    file_name = 'data.xlsx' #文件路径
     qun_name = None #群名称
     qun_num = None #群人数
     line = None #保存当前操作的是第几行
@@ -22,9 +22,12 @@ class QunMessage(object):
     wait_time = 5.0 #超时等待
     qun_list_wait_time = 60.0 #进入群列表等待时间
     qun_list_name_id = 'com.tencent.mobileqq:id/tv_name'
-    message_content = '支付宝发红包啦，赶紧领取，打开支付宝首页搜索“499754”，即可领红包，每天都可以领取哦；没有支付宝赶紧下载https://m.alipay.com/DPlKoAc，注册即可领取现金红包。1014'
+    #message_content = '支付宝发红包啦，赶紧领取，打开支付宝首页搜索“499754”，即可领红包，每天都可以领取哦；没有支付宝赶紧下载https://m.alipay.com/DPlKoAc，注册即可领取现金红包。1014'
     temp_num = 0 #记录启动appium的次数
     data_json = None
+    udid = 'd102deb37d13'
+
+    message_content = '【家长注意！“家庭式”感冒来袭，医院小病-号-扎-堆-了-】https://mini.eastday.com/mobile/190103234356740.html?ca=809169121&f1=xq2'
 
     #haha小视频
     #message_content = '哈哈小视频，一款边刷视频边赚钱的软件，和抖音一样好玩，关键是还能赚钱哦。'
@@ -42,7 +45,7 @@ class QunMessage(object):
             self.click_ok_by_id()
             self.send_new()
         except Exception as e:
-            #print('loop_step异常信息: %s'%e)
+            print('loop_step异常信息: %s'%e)
             self.exce_method()
 
     #获取driver
@@ -56,7 +59,8 @@ class QunMessage(object):
         desired_caps['appActivity'] = 'com.tencent.mobileqq.activity.SplashActivity'
         desired_caps['unicodeKeyboard'] = 'true'
         desired_caps['resetKeyboard'] = 'true'
-        desired_caps['udid'] = 'H8018K9012345678'
+        desired_caps['noReset'] = 'true'
+        desired_caps['udid'] = self.udid
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 
         try:
@@ -126,10 +130,10 @@ class QunMessage(object):
     def click_letter(self, character_index):
         x = 694
         y = 289
-        dur = 31
-        click_cmd = 'adb -s H8018K9012345678 shell input tap %d %d' % (x, y + dur*character_index)
+        dur = 34
+        click_cmd = 'adb -s %s shell input tap %d %d' % (self.udid, x, y + dur*character_index)
         os.popen(click_cmd)
-        click_cmd = 'adb -s H8018K9012345678 shell input tap %d %d' % (x, y + dur*character_index)
+        click_cmd = 'adb -s %s shell input tap %d %d' % (self.udid, x, y + dur*character_index)
         os.popen(click_cmd)
         time.sleep(1.0)
 
@@ -138,10 +142,12 @@ class QunMessage(object):
         #print(sys._getframe().f_code.co_name)
         try:
             self.driver.find_element_by_name('联系人').click()
+            WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('群聊'))
+            self.driver.find_element_by_name('群聊').click()
             WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_id('com.tencent.mobileqq:id/text1'))
             # 判断坦白说是否存在,存在左滑删除
             if '坦白说' in self.driver.page_source:
-                cmd = 'adb -s H8018K9012345678 shell input swipe 360 394 10 394 100'
+                cmd = 'adb -s %s shell input swipe 360 394 10 394 100'%self.udid
                 os.popen(cmd)
                 time.sleep(1.0)
             else:
@@ -152,7 +158,7 @@ class QunMessage(object):
             time.sleep(1.0)
 
             if self.qun_name not in self.driver.page_source:
-                cmd_swipe = 'adb -s H8018K9012345678 shell input swipe 360 800 360 700 500'
+                cmd_swipe = 'adb -s %s shell input swipe 360 800 360 700 500'%self.udid
                 os.popen(cmd_swipe)
                 time.sleep(1.0)
             else:
@@ -160,7 +166,7 @@ class QunMessage(object):
 
             # 判断群昵称是否存在页面，不存在滑动屏幕
             while self.qun_name not in self.driver.page_source:
-                cmd_swipe = 'adb -s H8018K9012345678 shell input swipe 360 800 360 350 500'
+                cmd_swipe = 'adb -s %s shell input swipe 360 800 360 350 500'%self.udid
                 os.popen(cmd_swipe)
                 time.sleep(2.0)
             else:
@@ -188,7 +194,7 @@ class QunMessage(object):
             if '发消息' in self.driver.page_source:
                 pass
             elif '编辑资料' in self.driver.page_source:
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 time.sleep(1.0)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
@@ -208,11 +214,11 @@ class QunMessage(object):
                 lambda x: x.find_element_by_id('com.tencent.mobileqq:id/input'))
 
             # 判断是否发送过消息
-            if self.haha_content in self.driver.page_source:
+            if self.message_content in self.driver.page_source:
                 self.send_times += 1
                 self.write_to_file() #写入文件
                 self.change_to_false()
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('联系人'))
             else:
@@ -220,11 +226,11 @@ class QunMessage(object):
                 time.sleep(0.5)
                 self.driver.find_element_by_name('发送').click()
                 time.sleep(0.5)
-                self.send_picture()
+                #self.send_picture()      #调用发图片方法
                 self.send_times += 1
                 self.write_to_file()  # 写入文件
                 self.change_to_false()  # 发送次数大于群人数，修改文件
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
 
@@ -301,7 +307,7 @@ class QunMessage(object):
             if self.message_content in self.driver.page_source:
                 self.send_times += 1
                 self.write_to_file()  # 写入文件
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
             else:
@@ -312,31 +318,31 @@ class QunMessage(object):
                 self.send_times += 1
                 self.write_to_file()  # 写入文件
                 self.change_to_false()  # 发送次数大于群人数，修改文件
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
 
             self.loop_step()
         elif '原图' in self.driver.page_source and '相册' in self.driver.page_source and '编辑' in self.driver.page_source:
-            back_cmd1 = 'adb -s H8018K9012345678 shell input keyevent 4'
+            back_cmd1 = 'adb -s %s shell input keyevent 4'%self.udid
             os.popen(back_cmd1)
             time.sleep(1.0)
-            back_cmd2 = 'adb -s H8018K9012345678 shell input keyevent 4'
+            back_cmd2 = 'adb -s %s shell input keyevent 4'%self.udid
             os.popen(back_cmd2)
             WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
             self.loop_step()
 
         elif self.is_exists_element_by_id('com.tencent.mobileqq:id/input'):
-            back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+            back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
             os.popen(back_cmd)
             time.sleep(1.0)
             self.loop_step()
         else:
             try:
-                stop_cmd = 'adb -s H8018K9012345678 shell am force-stop com.tencent.mobileqq'
+                stop_cmd = 'adb -s %s shell am force-stop com.tencent.mobileqq'%self.udid
                 os.popen(stop_cmd)
                 time.sleep(3.0)
-                start_cmd = 'adb -s H8018K9012345678 shell am start com.tencent.mobileqq/.activity.SplashActivity'
+                start_cmd = 'adb -s %s shell am start com.tencent.mobileqq/.activity.SplashActivity'%self.udid
                 os.popen(start_cmd)
                 WebDriverWait(self.driver, self.launch_time).until(lambda x:x.find_element_by_name('联系人'))
                 self.loop_step()
@@ -377,7 +383,7 @@ class QunMessage(object):
             try:
                 x = 135
                 y = 1164
-                cmd1 = 'adb -s H8018K9012345678 shell input tap %d %d'%(x, y)
+                cmd1 = 'adb -s %s shell input tap %d %d'%(self.udid, x, y)
                 os.popen(cmd1)
                 time.sleep(1.0)
 
@@ -390,14 +396,14 @@ class QunMessage(object):
                     else:
                         x = 135
                         y = 1164
-                        cmd1 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x, y)
+                        cmd1 = 'adb -s %s shell input tap %d %d' % (self.udid, x, y)
                         os.popen(cmd1)
                         time.sleep(1.0)
 
                 #发送第一张图片
                 x1 = 75
                 y1 = 958
-                cmd_pic1 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x1, y1)
+                cmd_pic1 = 'adb -s %s shell input tap %d %d' % (self.udid, x1, y1)
                 os.popen(cmd_pic1)
                 time.sleep(1.0)
                 if '发送(1)' in self.driver.page_source:
@@ -407,14 +413,14 @@ class QunMessage(object):
                     if '发送(1)' in self.driver.page_source:
                         pass
                     else:
-                        cmd_pic1 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x1, y1)
+                        cmd_pic1 = 'adb -s %s shell input tap %d %d' % (self.udid, x1, y1)
                         os.popen(cmd_pic1)
                         time.sleep(1.0)
 
                 # 发送第二张图片
                 x2 = 225
                 y2 = 958
-                cmd_pic2 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x2, y2)
+                cmd_pic2 = 'adb -s %s shell input tap %d %d' % (self.udid, x2, y2)
                 os.popen(cmd_pic2)
                 time.sleep(1.0)
                 if '发送(2)' in self.driver.page_source:
@@ -424,14 +430,14 @@ class QunMessage(object):
                     if '发送(2)' in self.driver.page_source:
                         pass
                     else:
-                        cmd_pic2 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x2, y2)
+                        cmd_pic2 = 'adb -s %s shell input tap %d %d' % (self.udid, x2, y2)
                         os.popen(cmd_pic2)
                         time.sleep(1.0)
 
                 #发送第三张图片
                 x3 = 375
                 y3 = 958
-                cmd_pic3 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x3, y3)
+                cmd_pic3 = 'adb -s %s shell input tap %d %d' % (self.udid, x3, y3)
                 os.popen(cmd_pic3)
                 time.sleep(1.0)
                 if '发送(3)' in self.driver.page_source:
@@ -441,7 +447,7 @@ class QunMessage(object):
                     if '发送(3)' in self.driver.page_source:
                         pass
                     else:
-                        cmd_pic3 = 'adb -s H8018K9012345678 shell input tap %d %d' % (x3, y3)
+                        cmd_pic3 = 'adb -s %s shell input tap %d %d' % (self.udid, x3, y3)
                         os.popen(cmd_pic3)
                         time.sleep(1.0)
 
@@ -453,7 +459,7 @@ class QunMessage(object):
                 self.driver.find_element_by_name('发送').click()
                 time.sleep(1.0)
 
-                back_cmd = 'adb -s H8018K9012345678 shell input keyevent 4'
+                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 time.sleep(0.5)
 
@@ -463,7 +469,13 @@ class QunMessage(object):
             pass
 
 if __name__ == '__main__':
+
     qm = QunMessage()
+
+    os.popen('adb -s %s shell settings put system screen_brightness_mode 0'%qm.udid)
+    time.sleep(1.0)
+    os.popen('adb -s %s shell settings put system screen_brightness 1'%qm.udid)
+    time.sleep(1.0)
     #qm.repet_get_driver()
     try:
         qm.get_driver()
