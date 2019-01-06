@@ -107,7 +107,7 @@ class AddQun(object):
         try:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
 
-            if '群位置' in self.driver.page_source:
+            if '群位置' in self.driver.page_source and '申请加群' in self.driver.page_source:
                 num = 11
             else:
                 text = self.driver.find_element(Locators.QUN_PEOPLE_NUM[0], Locators.QUN_PEOPLE_NUM[1]).get_attribute(
@@ -182,20 +182,7 @@ class AddQun(object):
         if Locators.QQ_PHONE_PUBLIC[1] in self.driver.page_source and Locators.FIND_QUN[1] not in self.driver.page_source:
             self.go_verfication(AddQun)
         elif Locators.FIND_QUN_NUM[1] in self.driver.page_source:
-            self.driver.find_element(Locators.FIND_QUN_NUM[0], Locators.FIND_QUN_NUM[1]).click()
-            # 判断是否查到结果, 没查到继续查，查到了下一步
-            try:
-                WebDriverWait(self.driver, 3.0).until(
-                    lambda driver: driver.find_element(Locators.NOT_QUN[0], Locators.NOT_QUN[1]))
-                self.go_verfication(AddQun)
-            except Exception as e:
-                time.sleep(3.0)
-                if Locators.FIND_RES[1] in self.driver.page_source:
-                    os.popen(back_cmd)
-                    time.sleep(1.5)
-                    self.go_verfication(AddQun)
-                else:
-                    self.apply_add_qun(AddQun)
+            self.go_verfication(AddQun)
         elif Locators.APPLY_ADD_QUN[1] in self.driver.page_source:
             os.popen(back_cmd)
             time.sleep(1.5)

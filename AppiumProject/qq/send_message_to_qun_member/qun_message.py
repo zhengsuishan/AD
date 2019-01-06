@@ -6,6 +6,7 @@ import json
 from xlutils.copy import copy
 from appium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
+import traceback
 
 class QunMessage(object):
 
@@ -27,8 +28,8 @@ class QunMessage(object):
     data_json = None
     udid = 'd102deb37d13'
 
-    message_content = '【家长注意！“家庭式”感冒来袭，医院小病-号-扎-堆-了-】https://mini.eastday.com/mobile/190103234356740.html?ca=809169121&f1=xq2'
-
+    message_content_url = '太好看了！刘亦菲2019第一张照片曝光，31岁还是人群中的仙女https://mini.eastday.com/mobile/190105131143995.html?ca=809169121&f1=xq1'
+    message_content = '抱歉，打扰了，给您分享一条新闻，点开看看吧！'
     #haha小视频
     #message_content = '哈哈小视频，一款边刷视频边赚钱的软件，和抖音一样好玩，关键是还能赚钱哦。'
     #haha_content = '有兴趣的话，扫码下载注册试试吧。'
@@ -45,7 +46,8 @@ class QunMessage(object):
             self.click_ok_by_id()
             self.send_new()
         except Exception as e:
-            print('loop_step异常信息: %s'%e)
+            #print('loop_step异常信息: %s'%e)
+            #print(traceback.print_exc())
             self.exce_method()
 
     #获取driver
@@ -157,6 +159,12 @@ class QunMessage(object):
             self.driver.find_element_by_name('群聊').click()
             time.sleep(1.0)
 
+            #判断群名称是否是str类型
+            if type(self.qun_name) is not str:
+                self.qun_name = str(self.qun_name)
+            else:
+                pass
+
             if self.qun_name not in self.driver.page_source:
                 cmd_swipe = 'adb -s %s shell input swipe 360 800 360 700 500'%self.udid
                 os.popen(cmd_swipe)
@@ -181,6 +189,7 @@ class QunMessage(object):
             WebDriverWait(self.driver, self.qun_list_wait_time).until(lambda x: x.find_element_by_name('搜索'))
         except Exception as e:
             #print('speak_isexists_and_click_qunname异常信息: %s' % e)
+            #print(traceback.print_exc())
             self.exce_method()
 
     #判断成员列表页面点击成员是否有效
@@ -222,6 +231,10 @@ class QunMessage(object):
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('联系人'))
             else:
+                self.driver.find_element_by_id('com.tencent.mobileqq:id/input').send_keys(self.message_content_url)
+                time.sleep(0.5)
+                self.driver.find_element_by_name('发送').click()
+                time.sleep(0.5)
                 self.driver.find_element_by_id('com.tencent.mobileqq:id/input').send_keys(self.message_content)
                 time.sleep(0.5)
                 self.driver.find_element_by_name('发送').click()
@@ -467,6 +480,14 @@ class QunMessage(object):
                 self.exce_method()
         else:
             pass
+
+    #优先在线排序
+    def send_by_sort_online(self):
+        self.driver.find_element_by_accessibility_id('切换排序方式').click()
+        WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('优先在线成员'))
+        self.driver.find_element_by_name('优先在线成员').click()
+        pass
+
 
 if __name__ == '__main__':
 
