@@ -107,8 +107,14 @@ class AddQun(object):
         try:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
 
+
+
             if '群位置' in self.driver.page_source and '申请加群' in self.driver.page_source:
                 num = 11
+            elif '申请加群' not in self.driver.page_source:
+                os.popen(back_cmd)
+                time.sleep(1.5)
+                self.go_verfication(AddQun)
             else:
                 text = self.driver.find_element(Locators.QUN_PEOPLE_NUM[0], Locators.QUN_PEOPLE_NUM[1]).get_attribute(
                     'text')
