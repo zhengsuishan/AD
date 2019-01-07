@@ -220,6 +220,8 @@ class AddQun(object):
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda driver: driver.find_element(Locators.CLEAR[0], Locators.CLEAR[1]))
             self.go_verfication(AddQun)
+        elif Locators.MAIN_PAGE_NEWS[1] in self.driver.page_source and Locators.MAIN_PAGE_CONTACTS[1] in self.driver.page_source and Locators.MAIN_PAGE_LOOK[1] in self.driver.page_source:
+            self.go_verfication(AddQun)
         else:
             os.popen(start_cmd)
             time.sleep(3.0)

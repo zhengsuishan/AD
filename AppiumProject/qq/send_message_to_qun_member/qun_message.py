@@ -28,8 +28,8 @@ class QunMessage(object):
     data_json = None
     udid = 'd102deb37d13'
 
-    message_content_url = '太好看了！刘亦菲2019第一张照片曝光，31岁还是人群中的仙女https://mini.eastday.com/mobile/190105131143995.html?ca=809169121&f1=xq1'
-    message_content = '抱歉，打扰了，给您分享一条新闻，点开看看吧！'
+    message_content_url = '警方提醒女性朋友厕所内看到这种螺丝千万别碰马上拨打110报警】https://mini.eastday.com/mobile/190106174426399.html?ca=809169121&f1=xq1'
+    message_content = '警方提醒女性朋友厕所内看到这种螺丝千万别碰马上拨打110报警'
     #haha小视频
     #message_content = '哈哈小视频，一款边刷视频边赚钱的软件，和抖音一样好玩，关键是还能赚钱哦。'
     #haha_content = '有兴趣的话，扫码下载注册试试吧。'

@@ -5,6 +5,7 @@ from AppiumProject.qq.add_qun.init_para import InitPara
 from AppiumProject.qq.add_qun.add_qun import AddQun
 import time
 import os
+import traceback
 
 if __name__ == '__main__':
     driver = None
@@ -28,7 +29,10 @@ if __name__ == '__main__':
         except Exception as e:
             time.sleep(60)
 
-    AddQun.set_driver(AddQun, driver, udid=udid)
-    AddQun.launch_app(AddQun)
-    AddQun.go_verfication(AddQun)
-    AddQun.apply_add_qun(AddQun)
+    try:
+        AddQun.set_driver(AddQun, driver, udid=udid)
+        AddQun.launch_app(AddQun)
+        AddQun.go_verfication(AddQun)
+        AddQun.apply_add_qun(AddQun)
+    except Exception as e:
+        print(traceback.print_exc())
