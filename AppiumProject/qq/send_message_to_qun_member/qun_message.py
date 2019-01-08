@@ -28,8 +28,8 @@ class QunMessage(object):
     data_json = None
     udid = 'd102deb37d13'
 
-    message_content_url = '警方提醒女性朋友厕所内看到这种螺丝千万别碰马上拨打110报警】https://mini.eastday.com/mobile/190106174426399.html?ca=809169121&f1=xq1'
-    message_content = '警方提醒女性朋友厕所内看到这种螺丝千万别碰马上拨打110报警'
+    message_content_url = '当心！有人路过你身边，就能刷走-你-的-钱！https://mini.eastday.com/mobile/181217154453129.html?ca=809169121&f1=xq1'
+    message_content = '当心！有人路过你身边，就能刷走-你-的-钱！'
     #haha小视频
     #message_content = '哈哈小视频，一款边刷视频边赚钱的软件，和抖音一样好玩，关键是还能赚钱哦。'
     #haha_content = '有兴趣的话，扫码下载注册试试吧。'
@@ -147,13 +147,6 @@ class QunMessage(object):
             WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('群聊'))
             self.driver.find_element_by_name('群聊').click()
             WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_id('com.tencent.mobileqq:id/text1'))
-            # 判断坦白说是否存在,存在左滑删除
-            if '坦白说' in self.driver.page_source:
-                cmd = 'adb -s %s shell input swipe 360 394 10 394 100'%self.udid
-                os.popen(cmd)
-                time.sleep(1.0)
-            else:
-                pass
 
             # 点击群聊文案
             self.driver.find_element_by_name('群聊').click()
@@ -165,12 +158,14 @@ class QunMessage(object):
             else:
                 pass
 
-            if self.qun_name not in self.driver.page_source:
+            '''
+                        if self.qun_name not in self.driver.page_source:
                 cmd_swipe = 'adb -s %s shell input swipe 360 800 360 700 500'%self.udid
                 os.popen(cmd_swipe)
                 time.sleep(1.0)
             else:
                 pass
+            '''
 
             # 判断群昵称是否存在页面，不存在滑动屏幕
             while self.qun_name not in self.driver.page_source:

@@ -228,6 +228,10 @@ class AddQun(object):
             self.go_verfication(AddQun)
         elif Locators.MAIN_PAGE_NEWS[1] in self.driver.page_source and Locators.MAIN_PAGE_CONTACTS[1] in self.driver.page_source and Locators.MAIN_PAGE_LOOK[1] in self.driver.page_source:
             self.go_verfication(AddQun)
+        elif '存储空间严重不足' in self.driver.page_source:
+            self.driver.find_element_by_name('取消').click()
+            time.sleep(1.5)
+            self.exce_do(AddQun)
         else:
             os.popen(start_cmd)
             time.sleep(3.0)
