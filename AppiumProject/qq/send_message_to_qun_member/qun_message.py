@@ -7,6 +7,7 @@ from xlutils.copy import copy
 from appium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 import traceback
+from AppiumProject.qq.send_message_to_qun_member import new_list
 
 class QunMessage(object):
 
@@ -28,12 +29,20 @@ class QunMessage(object):
     data_json = None
     udid = 'd102deb37d13'
 
-    message_content_url = '当心！有人路过你身边，就能刷走-你-的-钱！https://mini.eastday.com/mobile/181217154453129.html?ca=809169121&f1=xq1'
-    message_content = '当心！有人路过你身边，就能刷走-你-的-钱！'
+    #当前群姓名
+    current_name = None
+    bool_fir_start = True
+
+    message_content_url = None
+    message_content = None
     #haha小视频
     #message_content = '哈哈小视频，一款边刷视频边赚钱的软件，和抖音一样好玩，关键是还能赚钱哦。'
     #haha_content = '有兴趣的话，扫码下载注册试试吧。'
 
+    def get_new(self):
+        lists = new_list.get_news()
+        self.message_content_url = lists[0]
+        self.message_content = lists[1]
 
     def loop_step(self):
         #print(sys._getframe().f_code.co_name)
@@ -143,14 +152,24 @@ class QunMessage(object):
     def speak_isexists_and_click_qunname(self):
         #print(sys._getframe().f_code.co_name)
         try:
-            self.driver.find_element_by_name('联系人').click()
-            WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('群聊'))
-            self.driver.find_element_by_name('群聊').click()
-            WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_id('com.tencent.mobileqq:id/text1'))
 
-            # 点击群聊文案
-            self.driver.find_element_by_name('群聊').click()
-            time.sleep(1.0)
+            if self.bool_fir_start:
+                self.driver.find_element_by_name('联系人').click()
+                WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊'))
+                self.driver.find_element_by_name('群聊').click()
+
+                WebDriverWait(self.driver, self.wait_time).until(
+                    lambda x: x.find_element_by_id('com.tencent.mobileqq:id/text1'))
+
+                # 点击群聊文案
+                self.driver.find_element_by_name('群聊').click()
+                time.sleep(0.3)
+
+                self.bool_fir_start = False
+
+            else:
+                self.driver.find_element_by_name('联系人').click()
+                time.sleep(0.3)
 
             #判断群名称是否是str类型
             if type(self.qun_name) is not str:
@@ -166,6 +185,7 @@ class QunMessage(object):
             else:
                 pass
             '''
+
 
             # 判断群昵称是否存在页面，不存在滑动屏幕
             while self.qun_name not in self.driver.page_source:
@@ -213,6 +233,9 @@ class QunMessage(object):
     def send_new(self):
         #print(sys._getframe().f_code.co_name)
         try:
+            #加载发送消息
+            self.get_new()
+
             self.driver.find_element_by_name('发消息').click()
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda x: x.find_element_by_id('com.tencent.mobileqq:id/input'))
