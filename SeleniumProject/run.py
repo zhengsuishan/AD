@@ -2,7 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
-url = 'http://www.tongxiao.com.cn/Html/JiaoYuKaoShi_521/'
+url = 'http://www.tongxiao.com.cn/Html/LvYouChuXingqq_555/'
 net_wait_time = 15
 import time
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
         text = text.replace('\n', '')
         text = text.strip()
-        file = open('qun_num_3', 'a+')
+        file = open('qun_num_4', 'a+')
 
         file.write('\n')
         file.write(text)
