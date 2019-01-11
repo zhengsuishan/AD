@@ -29,6 +29,8 @@ class QunMessage(object):
     data_json = None
     udid = 'd102deb37d13'
 
+    swipe_count = 0 #记录在群列表界面的滑动次数
+
     #当前群姓名
     current_name = None
     bool_fir_start = True
@@ -96,6 +98,15 @@ class QunMessage(object):
         else:
             pass
 
+    #群名称不存在
+    def qun_name_null(self):
+        workbook = xlrd.open_workbook(self.file_name)
+        workbook_new = copy(workbook)
+        ws = workbook_new.get_sheet(0)
+        ws.write(self.line, 0, 'no')
+        ws.write(self.line + 1, 0, 'yes')
+        workbook_new.save(self.file_name)
+
     #读取群昵称和群人数
     def get_nameandnum(self):
         work_book = xlrd.open_workbook(self.file_name)
@@ -148,6 +159,33 @@ class QunMessage(object):
         os.popen(click_cmd)
         time.sleep(1.0)
 
+    #处理群列表收缩和群名称不存在情况
+    def qun_naum_null(self):
+        # 判断群昵称是否存在页面，不存在滑动屏幕
+        while self.qun_name not in self.driver.page_source:
+
+            if self.is_exists_element_by_id('com.tencent.mobileqq:id/text1'):
+                if self.swipe_count >= 2:
+                    self.qun_name_null()
+                    self.get_nameandnum()
+                    self.qun_naum_null()
+                else:
+                    cmd_swipe = 'adb -s %s shell input swipe 360 800 360 680 500' % self.udid
+                    os.popen(cmd_swipe)
+                    time.sleep(1.5)
+                    self.swipe_count += 1
+                    self.qun_naum_null()
+            else:
+                self.driver.find_element_by_name('群聊').click()
+                time.sleep(0.5)
+                self.qun_naum_null()
+
+        else:
+            self.driver.find_element_by_name(self.qun_name).click()
+            self.swipe_count = 0
+
+
+
     #判断坦白说是否存在
     def speak_isexists_and_click_qunname(self):
         #print(sys._getframe().f_code.co_name)
@@ -186,18 +224,12 @@ class QunMessage(object):
                 pass
             '''
 
-
-            # 判断群昵称是否存在页面，不存在滑动屏幕
-            while self.qun_name not in self.driver.page_source:
-                cmd_swipe = 'adb -s %s shell input swipe 360 800 360 350 500'%self.udid
-                os.popen(cmd_swipe)
-                time.sleep(2.0)
-            else:
-                self.driver.find_element_by_name(self.qun_name).click()
+            self.qun_naum_null()
 
             # 进入群成员列表页面
             WebDriverWait(self.driver, self.wait_time).until(
                 lambda x: x.find_element_by_id('com.tencent.mobileqq:id/ivTitleBtnRightImage'))
+
             self.driver.find_element_by_id('com.tencent.mobileqq:id/ivTitleBtnRightImage').click()
             WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
             self.driver.find_element_by_name('群聊成员').click()

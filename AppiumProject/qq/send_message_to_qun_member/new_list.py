@@ -2,17 +2,11 @@
 
 import random
 
-news_url_list = ['一个火遍朋友圈的骗局落幕 全国 200 多万人被骗。详情链接>>>http://www.tengxundaxuezd.cn/iQvy2akz34m29',
-                 '刚发生！毕福剑在家中自杀身亡！多人参加毕福剑的追悼会....。详情链接>>>http://www.wanjiami.net/3M7Fv225po46dv',
-                 '刘强东事件女主蒋娉婷大量高清私密照流出，成熟性感。详情链接>>>http://www.84zhai.cn/IzQ7N3cr4ezyxl',
-                 '马云给他儿子写了一封信，感动无数人！。详情链接>>>http://www.btgbanky.cn/rMJZJfo43pqxu',
-                 '蒋介石去世时出现的奇异天象，宋美龄都惊呆了！。详情链接>>>http://www.tumitengxun.cn/aqYJFb74opjdk']
+news_url_list = ['支付宝转账时，如果出现这个提示就要注意了。详情链接>>>http://www.fjjjwl.cn/2iQRnulq43podl',
+                 '大爆炸：上午，崔 永 元举报了 585位明星！附名单...。详情链接>>>http://www.maliang168.cn/6BV7fuypof7d9']
 
-news_text_list = ['一个火遍朋友圈的骗局落幕 全国 200 多万人被骗',
-                  '刚发生！毕福剑在家中自杀身亡！多人参加毕福剑的追悼会',
-                  '刘强东事件女主蒋娉婷大量高清私密照流出，成熟性感',
-                  '马云给他儿子写了一封信，感动无数人',
-                  '蒋介石去世时出现的奇异天象，宋美龄都惊呆了']
+news_text_list = ['支付宝转账时，如果出现这个提示就要注意了',
+                  '大爆炸：上午，崔 永 元举报了 585位明星！附名单']
 
 def get_news():
     size = len(news_url_list)
