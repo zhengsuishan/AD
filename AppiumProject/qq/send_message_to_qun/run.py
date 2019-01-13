@@ -24,10 +24,9 @@ if __name__ == '__main__':
         wake_cmd = 'adb -s %s shell input keyevent 26' % device_udid
         os.popen(wake_cmd)
         time.sleep(2.0)
-
-    swipe_cmd = 'adb -s %s shell input swipe 360 800 360 100 100'%device_udid
-    os.popen(swipe_cmd)
-    time.sleep(1.0)
+        swipe_cmd = 'adb -s %s shell input swipe 360 800 360 100 100' % device_udid
+        os.popen(swipe_cmd)
+        time.sleep(1.0)
 
     light_cmd = 'adb -s %s shell settings put system screen_brightness 1'%device_udid
     os.popen(light_cmd)

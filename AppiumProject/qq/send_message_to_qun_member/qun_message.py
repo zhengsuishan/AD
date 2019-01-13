@@ -58,7 +58,7 @@ class QunMessage(object):
             self.send_new()
         except Exception as e:
             #print('loop_step异常信息: %s'%e)
-            #print(traceback.print_exc())
+            print(traceback.print_exc())
             self.exce_method()
 
     #获取driver
@@ -113,8 +113,10 @@ class QunMessage(object):
         sheet = work_book.sheet_by_index(0)
         rows = sheet.nrows
         for i in range(0, rows):
+
             if sheet.cell_value(i, 0) == 'yes':
                 self.qun_name = sheet.cell_value(i, 1)
+
                 self.qun_num = int(str(sheet.cell_value(i, 2)).split('.')[0])
                 self.send_times = int(str(sheet.cell_value(i, 3)).split('.')[0])
                 self.click_zimu = int(str(sheet.cell_value(i, 4)).split('.')[0])
@@ -253,10 +255,33 @@ class QunMessage(object):
                 back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
                 os.popen(back_cmd)
                 time.sleep(1.0)
-                WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
-                self.driver.swipe(360, 602, 360, 602 - self.swipeDur, 300)
-                time.sleep(0.3)
-                self.click_ok_by_id()
+                self.send_times += 1
+
+                self.write_to_file()
+
+                if self.send_times >= self.qun_num:
+
+                    workbook = xlrd.open_workbook(self.file_name)
+                    workbook_new = copy(workbook)
+                    ws = workbook_new.get_sheet(0)
+                    ws.write(self.line, 0, 'no')
+                    ws.write(self.line + 1, 0, 'yes')
+                    workbook_new.save(self.file_name)
+
+                    WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
+                    os.popen(back_cmd)
+                    WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
+                    os.popen(back_cmd)
+                    WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_id('com.tencent.mobileqq:id/ivTitleBtnRightImage'))
+                    os.popen(back_cmd)
+                    WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
+                    self.loop_step()
+                else:
+                    WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('群聊成员'))
+                    self.driver.swipe(360, 602, 360, 602 - self.swipeDur, 300)
+                    time.sleep(0.3)
+                    self.click_ok_by_id()
+
         except Exception as e:
             #print('click_ok_by_id异常信息: %s' % e)
             self.exce_method()
@@ -288,12 +313,11 @@ class QunMessage(object):
                 self.driver.find_element_by_id('com.tencent.mobileqq:id/input').send_keys(self.message_content)
                 time.sleep(0.5)
                 self.driver.find_element_by_name('发送').click()
-                time.sleep(0.5)
-                #self.send_picture()      #调用发图片方法
+                # self.send_picture()      #调用发图片方法
                 self.send_times += 1
                 self.write_to_file()  # 写入文件
                 self.change_to_false()  # 发送次数大于群人数，修改文件
-                back_cmd = 'adb -s %s shell input keyevent 4'%self.udid
+                back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
                 os.popen(back_cmd)
                 WebDriverWait(self.driver, self.wait_time).until(lambda x: x.find_element_by_name('联系人'))
 
@@ -420,6 +444,14 @@ class QunMessage(object):
         except Exception as e:
             return False
 
+    #根据asscee_id
+    def is_exists_ele_by_assess_id(self, ele_id):
+        try:
+            self.driver.find_element_by_accessibility_id(ele_id)
+            return True
+        except Exception as e:
+            return False
+
     #初始化driver失败，多次重试
     def repet_get_driver(self):
         if self.temp_num >= 4:
@@ -542,6 +574,8 @@ class QunMessage(object):
 if __name__ == '__main__':
 
     qm = QunMessage()
+
+    qm.get_nameandnum()
 
     os.popen('adb -s %s shell settings put system screen_brightness_mode 0'%qm.udid)
     time.sleep(1.0)

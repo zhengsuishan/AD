@@ -2,11 +2,9 @@
 
 import random
 
-news_url_list = ['支付宝转账时，如果出现这个提示就要注意了。详情链接>>>http://www.fjjjwl.cn/2iQRnulq43podl',
-                 '大爆炸：上午，崔 永 元举报了 585位明星！附名单...。详情链接>>>http://www.maliang168.cn/6BV7fuypof7d9']
+news_url_list = ['【会赚钱的头条】只要填写我的邀请码81201961，你立赚1元现金，我立赚2元现金，↓↓快来点击下载帮我助力吧↓↓http://a2.app.qq.com/o/simple.jsp?pkgname=com.cashtoutiao&ckey=CK1371494628908']
 
-news_text_list = ['支付宝转账时，如果出现这个提示就要注意了',
-                  '大爆炸：上午，崔 永 元举报了 585位明星！附名单']
+news_text_list = ['看新闻视频赚钱，1元即可提现，娱乐赚钱两不误。']
 
 def get_news():
     size = len(news_url_list)

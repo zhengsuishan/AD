@@ -124,7 +124,7 @@ class SendToQun(object):
                 time.sleep(1.0)
                 self.swipe_count += 1
 
-                if self.swipe_count >= 5:
+                if self.swipe_count >= 1:
                     self.qun_list_index += 1
                 else:
                     pass

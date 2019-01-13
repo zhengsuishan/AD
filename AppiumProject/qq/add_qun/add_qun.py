@@ -139,7 +139,7 @@ class AddQun(object):
                         while self.send_time <= 3:
                             self.driver.find_element(Locators.SUBMIT[0], Locators.SUBMIT[1]).click()
                             self.send_time += 1
-                            time.sleep(1.5)
+                            time.sleep(3.0)
                             if Locators.SUBMIT[1] in self.driver.page_source:
                                 pass
                             else:
