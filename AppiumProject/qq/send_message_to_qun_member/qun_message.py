@@ -57,7 +57,7 @@ class QunMessage(object):
             self.click_ok_by_id()
             self.send_new()
         except Exception as e:
-            #print('loop_step异常信息: %s'%e)
+            print('loop_step异常信息: %s'%e)
             print(traceback.print_exc())
             self.exce_method()
 
@@ -87,6 +87,7 @@ class QunMessage(object):
 
     #发送次数大于群人数，将yes变为false
     def change_to_false(self):
+        print(sys._getframe().f_code.co_name)
         last_qum = int(self.data_json['26'])
         if self.click_zimu >= 26 and self.send_times >= last_qum:
             workbook = xlrd.open_workbook(self.file_name)
@@ -109,7 +110,9 @@ class QunMessage(object):
 
     #读取群昵称和群人数
     def get_nameandnum(self):
+        print(sys._getframe().f_code.co_name)
         work_book = xlrd.open_workbook(self.file_name)
+
         sheet = work_book.sheet_by_index(0)
         rows = sheet.nrows
         for i in range(0, rows):
@@ -163,16 +166,15 @@ class QunMessage(object):
 
     #处理群列表收缩和群名称不存在情况
     def qun_naum_null(self):
+        print(sys._getframe().f_code.co_name)
         # 判断群昵称是否存在页面，不存在滑动屏幕
         while self.qun_name not in self.driver.page_source:
 
             if self.is_exists_element_by_id('com.tencent.mobileqq:id/text1'):
                 if self.swipe_count >= 2:
-                    self.qun_name_null()
-                    self.get_nameandnum()
-                    self.qun_naum_null()
+                    exit()
                 else:
-                    cmd_swipe = 'adb -s %s shell input swipe 360 800 360 680 500' % self.udid
+                    cmd_swipe = 'adb -s %s shell input swipe 360 800 360 500 500' % self.udid
                     os.popen(cmd_swipe)
                     time.sleep(1.5)
                     self.swipe_count += 1
@@ -190,7 +192,7 @@ class QunMessage(object):
 
     #判断坦白说是否存在
     def speak_isexists_and_click_qunname(self):
-        #print(sys._getframe().f_code.co_name)
+        print(sys._getframe().f_code.co_name)
         try:
 
             if self.bool_fir_start:
@@ -238,7 +240,7 @@ class QunMessage(object):
             WebDriverWait(self.driver, self.qun_list_wait_time).until(lambda x: x.find_element_by_name('搜索'))
         except Exception as e:
             #print('speak_isexists_and_click_qunname异常信息: %s' % e)
-            #print(traceback.print_exc())
+            print(traceback.print_exc())
             self.exce_method()
 
     #判断成员列表页面点击成员是否有效
@@ -371,7 +373,7 @@ class QunMessage(object):
 
     #异常处理方法
     def exce_method(self):
-        #print(sys._getframe().f_code.co_name)
+        print(sys._getframe().f_code.co_name)
         if '消息' in self.driver.page_source and '看点' in self.driver.page_source and '动态' in self.driver.page_source:
             self.loop_step()
         elif '我的群名片' in self.driver.page_source:
@@ -569,7 +571,6 @@ class QunMessage(object):
         WebDriverWait(self.driver, self.wait_time).until(lambda x:x.find_element_by_name('优先在线成员'))
         self.driver.find_element_by_name('优先在线成员').click()
         pass
-
 
 if __name__ == '__main__':
 
