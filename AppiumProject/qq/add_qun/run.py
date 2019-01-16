@@ -9,7 +9,8 @@ import traceback
 
 if __name__ == '__main__':
     driver = None
-    udid = 'd102deb37d13'
+    udid = '5761c059'
+    #udid = 'd102deb37d13'
     package = 'com.tencent.mobileqq'
     activity = 'com.tencent.mobileqq.activity.SplashActivity'
 

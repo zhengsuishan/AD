@@ -2,7 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
-url = 'http://www.tongxiao.com.cn/Html/ShangYeTouZi_571/'
+url = 'http://www.tongxiao.com.cn/Html/XingZuoqqQun_509/'
 net_wait_time = 15
 import time
 
@@ -21,6 +21,9 @@ if __name__ == '__main__':
 
         driver.switch_to.window(driver.window_handles[1])
 
+        WebDriverWait(driver, net_wait_time).until(
+            lambda driver: driver.find_element_by_xpath('//*[@id="body"]/table/tbody/tr/td/table/tbody/tr[4]/td[2]/font'))
+
         try:
             text = driver.find_element_by_xpath('//*[@id="body"]/table/tbody/tr/td/table/tbody/tr[4]/td[2]/font').text
         except Exception as e:
@@ -30,7 +33,7 @@ if __name__ == '__main__':
 
         text = text.replace('\n', '')
         text = text.strip()
-        file = open('qun_num_5', 'a+')
+        file = open('qun_num_6', 'a+')
 
         file.write('\n')
         file.write(text)
