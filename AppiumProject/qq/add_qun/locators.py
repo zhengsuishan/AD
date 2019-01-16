@@ -25,6 +25,7 @@ class Locators(object):
     PERSON = (By.NAME, '个人介绍')
     SUBMIT = (By.NAME, '发送')
     SEND_SUCCESS = (By.NAME, '发送成功')
+    CLOSED_BUTTON = (By.NAME, '关闭')
 
     FIND_RES = (By.NAME, '查找结果')
 

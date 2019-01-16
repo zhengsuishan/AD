@@ -122,7 +122,7 @@ class AddQun(object):
                 text = text.split('人')
                 num = int(text[0])
             # 判断群人数是否大于10
-            if num >= 10:
+            if num >= 50:
                 self.driver.find_element(Locators.APPLY_ADD_QUN[0], Locators.APPLY_ADD_QUN[1]).click()  # 点击申请加群
                 time.sleep(3.0)
 
@@ -152,7 +152,7 @@ class AddQun(object):
 
 
                         WebDriverWait(self.driver, self.wait_time).until(
-                            lambda driver: driver.find_element(Locators.SEND_SUCCESS[0], Locators.SEND_SUCCESS[1]))
+                            lambda driver: driver.find_element(Locators.CLOSED_BUTTON[0], Locators.CLOSED_BUTTON[1]))
 
                         #发送次数赋值0
                         self.send_time = 0
