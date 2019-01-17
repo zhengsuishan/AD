@@ -1,16 +1,16 @@
 #adb命令
 
 import os
-import time
 import xml.dom.minidom
 import time
-import demjson
-import json
-import collections
 
 global index
 index = -1
 
+udid = '5761c059'
+start_cmd = 'adb -s %s shell am start com.tencent.mobileqq/.activity.SplashActivity'%udid
+os.popen(start_cmd)
+time.sleep(5.0)
 
 def get_qun_num():
 
@@ -48,7 +48,8 @@ while True:
 
     string = DOMTree.toxml()
 
-    if '快捷入口' in string:
+    if '联系人' in string:
+        print('执行')
         click_1 = 'adb -s %s shell input tap %d %d'%(udid, 73, 60)
         os.popen(click_1)
         time.sleep(1.5)
