@@ -7,6 +7,8 @@ import random
 import time
 import traceback
 import os
+import sys
+from AppiumProject.common.adb_tools import AdbTools
 
 class AddQun(object):
 
@@ -53,6 +55,7 @@ class AddQun(object):
             self.exce_do(AddQun)
 
     def go_verfication(self):
+        print(sys._getframe().f_code.co_name)
         try:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
             if Locators.NOT_QUN[1] in self.driver.page_source:
@@ -104,6 +107,7 @@ class AddQun(object):
 
     #申请加群
     def apply_add_qun(self):
+        print(sys._getframe().f_code.co_name)
         try:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
 
@@ -126,14 +130,16 @@ class AddQun(object):
                 self.driver.find_element(Locators.APPLY_ADD_QUN[0], Locators.APPLY_ADD_QUN[1]).click()  # 点击申请加群
                 time.sleep(3.0)
 
+                all_element = AdbTools.get_all_element(AdbTools, self.udid)
+
                 # 判断点击申请加群后，该群是否允许加入
-                if Locators.APPLY_ADD_QUN[1] in self.driver.page_source:
+                if Locators.APPLY_ADD_QUN[1] in all_element:
                     os.popen(back_cmd)
                     time.sleep(1.5)
                     self.go_verfication(AddQun)
                 else:
                     # 判断是否需要填写问题
-                    if Locators.PERSON[1] in self.driver.page_source:
+                    if Locators.PERSON[1] in all_element:
 
                         #判断是否发送频繁
                         while self.send_time <= 3:
@@ -183,6 +189,7 @@ class AddQun(object):
 
     #异常处理
     def exce_do(self):
+        print(sys._getframe().f_code.co_name)
         back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
         start_cmd = 'adb -s %s shell am start com.tencent.mobileqq/.activity.SplashActivity'%self.udid
         if Locators.QQ_PHONE_PUBLIC[1] in self.driver.page_source and Locators.FIND_QUN[1] not in self.driver.page_source:
@@ -238,4 +245,4 @@ class AddQun(object):
             self.exce_do(AddQun)
 
 if __name__ == '__main__':
-    print(AddQun.get_qun_num(AddQun))
+    pass
