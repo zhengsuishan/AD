@@ -3,8 +3,8 @@
 class InitParm(object):
 
     device_udid = 'd102deb37d13'
-    send_text = '中国工资最低的6个城市，其中有你的故乡吗？。详情链接>>>http://www.weixinbenshan.cn/yYzy2uu4yp0du'
-    send_text1 = '中国工资最低的6个城市，其中有你的故乡吗'
+    send_text = '2019十大最佳旅游城市，中国仅一座城市上榜，但高居“第二”。详情链接>>>http://www.sshfcmy.cn/26nEVjhz34p2u'
+    send_text1 = '2019十大最佳旅游城市，中国仅一座城市上榜，但高居“第二”'
     qun_name_list1 = ['正定网-买卖交易', 'ATX(AutomatorX) old', '北京化妆师交流群', '珠三角高级化妆师群', '重庆软件测试交流群', '南京软件测试交流群',
                      '长沙软件测试交流群'] #群名称
     qun_name_list0 = ['兄弟汇', '路遇行人', 'Microsoft问题交流', '190933303', '微博热门实时推广精选', '输了你赢了全世界又如',
