@@ -47,7 +47,7 @@ class QunMessage(object):
         self.message_content = lists[1]
 
     def loop_step(self):
-        #print(sys._getframe().f_code.co_name)
+        ##print(sys._getframe().f_code.co_name)
         try:
             self.get_nameandnum()
             self.change_to_false()
@@ -57,13 +57,13 @@ class QunMessage(object):
             self.click_ok_by_id()
             self.send_new()
         except Exception as e:
-            print('loop_step异常信息: %s'%e)
-            print(traceback.print_exc())
+            #print('loop_step异常信息: %s'%e)
+            #print(traceback.#print_exc())
             self.exce_method()
 
     #获取driver
     def get_driver(self):
-        #print(sys._getframe().f_code.co_name)
+        ##print(sys._getframe().f_code.co_name)
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '7.0'
@@ -79,7 +79,7 @@ class QunMessage(object):
         try:
             WebDriverWait(self.driver, self.launch_time).until(lambda x:x.find_element_by_name('联系人'))
         except Exception as e:
-            #print('get_driver异常信息: %s' % e)
+            ##print('get_driver异常信息: %s' % e)
             if 'Message' in e:
                 pass
             else:
@@ -87,7 +87,7 @@ class QunMessage(object):
 
     #发送次数大于群人数，将yes变为false
     def change_to_false(self):
-        print(sys._getframe().f_code.co_name)
+        #print(sys._getframe().f_code.co_name)
         last_qum = int(self.data_json['26'])
         if self.click_zimu >= 26 and self.send_times >= last_qum:
             workbook = xlrd.open_workbook(self.file_name)
@@ -110,7 +110,7 @@ class QunMessage(object):
 
     #读取群昵称和群人数
     def get_nameandnum(self):
-        print(sys._getframe().f_code.co_name)
+        #print(sys._getframe().f_code.co_name)
         work_book = xlrd.open_workbook(self.file_name)
 
         sheet = work_book.sheet_by_index(0)
@@ -166,7 +166,7 @@ class QunMessage(object):
 
     #处理群列表收缩和群名称不存在情况
     def qun_naum_null(self):
-        print(sys._getframe().f_code.co_name)
+        #print(sys._getframe().f_code.co_name)
         # 判断群昵称是否存在页面，不存在滑动屏幕
         while self.qun_name not in self.driver.page_source:
 
@@ -192,7 +192,7 @@ class QunMessage(object):
 
     #判断坦白说是否存在
     def speak_isexists_and_click_qunname(self):
-        print(sys._getframe().f_code.co_name)
+        #print(sys._getframe().f_code.co_name)
         try:
 
             if self.bool_fir_start:
@@ -239,13 +239,13 @@ class QunMessage(object):
             self.driver.find_element_by_name('群聊成员').click()
             WebDriverWait(self.driver, self.qun_list_wait_time).until(lambda x: x.find_element_by_name('搜索'))
         except Exception as e:
-            #print('speak_isexists_and_click_qunname异常信息: %s' % e)
-            print(traceback.print_exc())
+            ##print('speak_isexists_and_click_qunname异常信息: %s' % e)
+            #print(traceback.#print_exc())
             self.exce_method()
 
     #判断成员列表页面点击成员是否有效
     def click_ok_by_id(self):
-        #print(sys._getframe().f_code.co_name)
+        ##print(sys._getframe().f_code.co_name)
         try:
             self.driver.find_element_by_id(self.qun_list_name_id).click()
             WebDriverWait(self.driver, self.wait_time).until(
@@ -285,12 +285,12 @@ class QunMessage(object):
                     self.click_ok_by_id()
 
         except Exception as e:
-            #print('click_ok_by_id异常信息: %s' % e)
+            ##print('click_ok_by_id异常信息: %s' % e)
             self.exce_method()
 
     #发送消息
     def send_new(self):
-        #print(sys._getframe().f_code.co_name)
+        ##print(sys._getframe().f_code.co_name)
         try:
             #加载发送消息
             self.get_new()
@@ -325,7 +325,7 @@ class QunMessage(object):
 
             self.loop_step()
         except Exception as e:
-            #print('click_ok_by_id异常信息：%s'%e)
+            ##print('click_ok_by_id异常信息：%s'%e)
             self.exce_method()
 
     #发送次数写入文件
@@ -347,7 +347,7 @@ class QunMessage(object):
 
     #群成员界面
     def swipe_qunchengyuan(self, times):
-        #print(sys._getframe().f_code.co_name)
+        ##print(sys._getframe().f_code.co_name)
         self.click_letter(self.click_zimu)
         if times >= 1:
             try:
@@ -366,14 +366,14 @@ class QunMessage(object):
                     self.driver.swipe(360, 602, 360, 602 - self.swipeDur, 300)
                     time.sleep(0.3)
             except Exception as e:
-                #print('swipe_qunchengyuan异常信息：%s' %e)
+                ##print('swipe_qunchengyuan异常信息：%s' %e)
                 self.exce_method()
         else:
             pass
 
     #异常处理方法
     def exce_method(self):
-        print(sys._getframe().f_code.co_name)
+        #print(sys._getframe().f_code.co_name)
         if '消息' in self.driver.page_source and '看点' in self.driver.page_source and '动态' in self.driver.page_source:
             self.loop_step()
         elif '我的群名片' in self.driver.page_source:
@@ -436,7 +436,7 @@ class QunMessage(object):
                 WebDriverWait(self.driver, self.launch_time).until(lambda x:x.find_element_by_name('联系人'))
                 self.loop_step()
             except Exception as e:
-                #print('exce_method异常信息：%s'%e)
+                ##print('exce_method异常信息：%s'%e)
                 self.exce_method()
     #根据控件id判断是否存在某元素
     def is_exists_element_by_id(self, ele_id):
