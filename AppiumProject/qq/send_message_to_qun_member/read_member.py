@@ -3,14 +3,13 @@
 import os
 import xml.dom.minidom
 import time
-import demjson
-import json
-import collections
 
 json_string = {0:"242", 1:"0", 2:"0", 3:"0", 4:"0", 5:"0", 6:"0", 7:"0", 8:"0", 9:"0", 10:"0",11:"0", 12:"0", 13:"0", 14:"0", 15:"0", 16:"0",17:"0", 18:"0", 19:"0", 20:"0", 21:"0", 22:"0", 23:"0", 24:"0", 25:"0", 26:"0"}
 
 for index in range(0, 27):
     device = 'd102deb37d13'
+
+    desk = os.path.join(os.path.expanduser("~"), 'Desktop')
 
     x = 694
     y = 289
@@ -30,11 +29,11 @@ for index in range(0, 27):
     os.popen(cmd_xml)
     time.sleep(5.0)
 
-    pull_cmd = 'adb -s %s pull /sdcard/window_dump.xml C:\\Users\\zss\\Desktop' % device
+    pull_cmd = 'adb -s %s pull /sdcard/window_dump.xml %s' % (device, desk)
     os.popen(pull_cmd)
     time.sleep(1.0)
 
-    file_path = 'C:\\Users\\zss\\Desktop\\window_dump.xml'  # xml文件路径
+    file_path = '%s\\window_dump.xml'%desk  # xml文件路径
     DOMTree = xml.dom.minidom.parse(file_path)  # 获取dom对象
 
     string = DOMTree.toxml()
