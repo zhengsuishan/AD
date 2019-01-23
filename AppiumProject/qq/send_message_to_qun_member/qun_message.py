@@ -165,7 +165,7 @@ class QunMessage(object):
         time.sleep(1.0)
 
         #判断字母切换是否成功
-        if '搜索' in self.driver.page_source and '默认排序' in self.driver.page_source:
+        if '搜索' in self.driver.page_source or '默认排序' in self.driver.page_source:
             pass
         else:
             back_cmd = 'adb -s %s shell input keyevent 4' % self.udid
