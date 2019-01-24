@@ -509,6 +509,10 @@ class QunMessage(object):
             os.popen(back_cmd)
             time.sleep(1.0)
             self.loop_step()
+        elif '存储空间严重不足' in self.driver.page_source:
+            self.driver.find_element_by_name('取消').click()
+            time.sleep(1.5)
+            self.exce_method()
         else:
             try:
                 stop_cmd = 'adb -s %s shell am force-stop com.tencent.mobileqq'%self.udid
