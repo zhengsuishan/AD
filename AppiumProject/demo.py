@@ -1,3 +1,5 @@
 import os
+import time
 
-print(os.path.join(os.path.expanduser("~"), 'Desktop'))
+name = str(int(time.time()))
+pic_cmd = 'adb shell'
