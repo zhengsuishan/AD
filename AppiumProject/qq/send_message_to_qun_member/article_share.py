@@ -57,8 +57,6 @@ class AS(object):
         wait_time = random.randint(10, 20)
         time.sleep(wait_time)
 
-        self.read_swipe(1)
-
         back_cmd = 'adb -s %s shell input tap %d %d' % (self.udid, self.back_x, self.back_y)
         os.popen(back_cmd)
         wait_time = random.randint(3, 5)
@@ -88,24 +86,8 @@ class AS(object):
         wait_time = random.randint(3, 5)
         time.sleep(wait_time)
 
-    def read_swipe(self, article_id):
-        if article_id == 1:
-            swipe_cmd = 'adb -s %s shell input swipe 360 600 360 80 500' % self.udid
-            os.popen(swipe_cmd)
-            time.sleep(1.5)
-            click_cmd = 'adb -s %s shell input tap 360 800'%self.udid
-            os.popen(click_cmd)
-            time.sleep(1.5)
-
-            swipe_cmd = 'adb -s %s shell input swipe 360 600 360 80 500' % self.udid
-            os.popen(swipe_cmd)
-            time.sleep(1.5)
-
-            for i in range(0, 4):
-                swipe_time = random.randint(1, 7)
-                swipe_cmd = 'adb -s %s shell input swipe 360 600 360 80 500' % self.udid
-                os.popen(swipe_cmd)
-                time.sleep(swipe_time)
+    def read_swipe(self):
+        pass
 
     def get_dump(self):
         cmd_xml = 'adb -s %s shell uiautomator dump' % self.udid
